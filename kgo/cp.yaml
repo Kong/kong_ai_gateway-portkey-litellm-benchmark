@@ -1,0 +1,22 @@
+kind: KonnectAPIAuthConfiguration
+apiVersion: konnect.konghq.com/v1alpha1
+metadata:
+  name: konnect-api-auth-conf
+  namespace: kong
+spec:
+  type: secretRef
+  secretRef:
+    name: konnect-pat
+    namespace: kong
+  serverURL: us.api.konghq.com
+---
+kind: KonnectGatewayControlPlane
+apiVersion: konnect.konghq.com/v1alpha1
+metadata:
+ name: ai-gateway
+ namespace: kong
+spec:
+ name: ai-gateway
+ konnect:
+   authRef:
+     name: konnect-api-auth-conf

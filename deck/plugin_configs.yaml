@@ -1,0 +1,58 @@
+_info:
+  select_tags:
+  - ai-gateway-svc
+_plugin_configs:  
+  ratelimiting-ai:
+    llm_providers:
+    - name: openai
+      limit:
+      #- 10000000000000
+      - 1000000000
+      window_size:
+      - 10
+    window_type: fixed
+    #strategy: local
+    strategy: redis
+    sync_rate: 2
+    redis:
+      host: redis.redis.svc.cluster.local
+      port: 6379
+
+  semanticcache-ai:
+    cache_ttl: 60
+    embeddings:
+      #auth:
+      #   header_name: Authorization
+      #  header_value: "{vault://aws-vault1/llm_keys/openai_api_key}"
+      model:
+        provider: openai
+        #provider: llama2
+        name: "mxbai-embed-large"
+        options:
+          #upstream_url: https://api.openai.com/v1/embeddings
+          #upstream_url: http://k8s-ollama-ollamalb-e3ac2bc9f6-17240de366a2d51f.elb.us-east-2.amazonaws.com:11434/v1/embeddings
+          upstream_url: http://k8s-wiremock-wmembedl-c07d3aff44-365f5a4441a2735a.elb.us-east-2.amazonaws.com:9021/embeddings
+    vectordb:
+      #dimensions: 1024
+      dimensions: 1536
+      distance_metric: cosine
+      strategy: redis
+      threshold: 0.1
+      redis:
+        host: redis.redis.svc.cluster.local
+        port: 6379
+        keepalive_pool_size: 80000
+        keepalive_backlog: 160000
+
+
+
+  #promptdecorator-ai:
+  #  prompts:
+  #    prepend:
+  #    - role: user
+  #      content: .
+
+
+  #keyauth:
+  #  key_names:
+  #  - apikey

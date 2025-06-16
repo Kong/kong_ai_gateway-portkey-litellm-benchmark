@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portkey
+  namespace: portkey
+  labels:
+    app: portkey
+spec:
+  selector:
+    matchLabels:
+      app: portkey
+  replicas: 12
+  template:
+    metadata:
+      labels:
+        app: portkey
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+      - name: portkey
+        image: portkeyai/gateway:latest
+        #image: ghcr.io/portkey-ai/portkey:latest
+        #image: ghcr.io/acquaorg/portkey:latest
+        imagePullPolicy: Always
+        #args: ["uvicorn", "portkey.main:app", "--host", "0.0.0.0", "--port", "8787", "--workers", "4"]
+        #args: ["run", "--", "--host", "0.0.0.0", "--port", "8787", "--workers", "4"]
+        #args: ["--host=0.0.0.0", "--port=8787", "--workers=4"]
+        resources:
+          requests:
+            cpu: 1
+            memory: "2Gi"
+          limits:
+            cpu: 1
+            memory: "3Gi"
+        ports:
+        - containerPort: 8787
+      nodeSelector:
+        "alpha.eksctl.io/nodegroup-name": "node-ai-gateway"
+

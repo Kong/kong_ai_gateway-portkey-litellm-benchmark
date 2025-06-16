@@ -1,0 +1,12 @@
+kubectl apply -f litellm-storageclass.yaml
+
+
+helm uninstall litellm -n litellm
+kubectl delete pvc data-litellm-postgresql-0 -n litellm
+kubectl delete namespace litellm
+
+
+helm install litellm ./litellm-helm -n litellm --create-namespace -f ./values.yaml
+
+kubectl apply -f litellm-service.yaml
+

@@ -1,0 +1,232 @@
+{
+  "mappings" : [ {
+    "id" : "a025a637-1213-4d26-9619-8668b21d5275",
+    "name" : "Creates an embedding vector representing the input text.",
+    "request" : {
+      "urlPath" : "/embeddings",
+      "method" : "POST"
+    },
+    "response" : {
+      "status" : 200,
+      "body" : "{\n  \"data\" : [ {\n    \"index\" : 8021874344570545625,\n    \"embedding\" : [ 1.0085060014812654E308, 1.28821179117846E308, 5.790766682171968E307, 9.97347342173209E307 ],\n    \"object\" : \"uh9hji4s5hjwpqhl\"\n  }, {\n    \"index\" : 2143377989661007679,\n    \"embedding\" : [ 1.3840588653396382E308, 1.0722863047058006E308, 1.0864450869203286E308 ],\n    \"object\" : \"ris0qblhhb2pf5k5\"\n  }, {\n    \"index\" : 2284436887836407429,\n    \"embedding\" : [ 9.632670972181686E307, 1.2350746317303229E308, 6.26101798758168E307, 1.6170639093593373E308, 1.1076622962919658E308, 6.509697513389923E307 ],\n    \"object\" : \"5ewh5y0vtwbrxnft0xzeo13apxcy1rycmmtes6f3iaze037dkawxpp852axpw9hiqpfby3s6oc\"\n  }, {\n    \"index\" : 7579338450362881591,\n    \"embedding\" : [ 1.7662992633002584E308, 1.7431636693327763E308 ],\n    \"object\" : \"sjkxf0u4yj1llh5fbp9p3ubxciudhn6szxt1m146qoksnb3j0oay9nougf20i8f5g545828obeaps\"\n  }, {\n    \"index\" : 5891605070453143830,\n    \"embedding\" : [ 2.7848949737388823E307, 9.331523732134896E307, 1.4953028393886036E308, 1.7278993085751662E308 ],\n    \"object\" : \"jwtqqcu7vdn07a2gxxpnxoz828uckk04t6izpi58505j8x1iaqkiali870i7o8os9q4ee6dcaqhwcamtmfyt09c1pa2jlwo3emji1cvjltrnwiuxdirblkag32e20880l5myam6uz32wyxgdkxa4nvf0loqe7tx8di3chqylfp7sv1gmbdww0arzhr52jrxbv2\"\n  }, {\n    \"index\" : 302712608083529080,\n    \"embedding\" : [ 1.4472537385859129E308, 7.606583918850042E307, 1.367159473479441E308, 9.489316069622288E307, 1.0624883103523094E308, 2.138256080262657E307 ],\n    \"object\" : \"c63f8eslqho03kparb0x80i2x6kn0gsw0g8pebigr01f2lka47payyq9aoghj6r4783ay3oj9yiq5mlvrough4o12b55ry23iernhgv24z1sb6fo78wroixzuekrsvpoh6m2tkbowm0fkxfmmslz7dln07jr\"\n  } ],\n  \"usage\" : {\n    \"prompt_tokens\" : 8557642371099248333,\n    \"total_tokens\" : 4289959560857010025\n  },\n  \"model\" : \"tikv3jls0idv867zeyx3r3ueniqagkqdfonyaji1w6cz3js5r5ey\",\n  \"object\" : \"52zcyo53cpeh3blz5wpd41e8ffa5vttyugd314zj3pjapi6bcuvbyxz52euxkfrzw389mcsufoaaolrzu2ri165e54unuconj0oez8xk6dry3x94rbnm9d9yoo\"\n}",
+      "headers" : {
+        "Content-Type" : "application/json"
+      }
+    },
+    "uuid" : "a025a637-1213-4d26-9619-8668b21d5275",
+    "persistent" : true,
+    "metadata" : {
+      "mocklab" : {
+        "created" : {
+          "at" : "2023-03-28T09:23:28.16859Z",
+          "via" : "OAS3_IMPORT"
+        },
+        "oas" : {
+          "operationId" : "createEmbedding",
+          "schema" : {
+            "properties" : {
+              "data" : {
+                "items" : {
+                  "properties" : {
+                    "embedding" : {
+                      "items" : {
+                        "type" : "number"
+                      },
+                      "type" : "array"
+                    },
+                    "index" : {
+                      "type" : "integer"
+                    },
+                    "object" : {
+                      "type" : "string"
+                    }
+                  },
+                  "required" : [ "index", "object", "embedding" ],
+                  "type" : "object"
+                },
+                "type" : "array"
+              },
+              "model" : {
+                "type" : "string"
+              },
+              "object" : {
+                "type" : "string"
+              },
+              "usage" : {
+                "properties" : {
+                  "prompt_tokens" : {
+                    "type" : "integer"
+                  },
+                  "total_tokens" : {
+                    "type" : "integer"
+                  }
+                },
+                "required" : [ "prompt_tokens", "total_tokens" ],
+                "type" : "object"
+              }
+            },
+            "required" : [ "object", "model", "data", "usage" ],
+            "type" : "object"
+          }
+        }
+      }
+    },
+    "insertionIndex" : 0
+    }, {
+    "id" : "0b479fde-6991-4c73-bfc2-b7ca9c7e18fa",
+    "name" : "Creates a completion for the chat message",
+    "request" : {
+      "urlPath" : "/chat",
+      "method" : "POST"
+    },
+    "response" : {
+      "status" : 200,
+      "body" : "{\n  \"created\" : 7103458915926373359,\n  \"usage\" : {\n    \"completion_tokens\" : 200,\n    \"prompt_tokens\" : 1000,\n    \"total_tokens\" : 1200\n  },\n  \"model\" : \"s46d0c7xc7dxl7oue3yd93akieg89bcgg0lxrkqif2jvqr3nk9vn8bbmvq1u3xqlthdy3nfa3w1sl0dp1a482v560inpclpxe3vkkqev6flqixvvw20xk\",\n  \"id\" : \"qibo\",\n  \"choices\" : [ {\n    \"finish_reason\" : \"x3voee2ztjal9104gycih5z12kqr72mekae82oknuu4grg34eh2ibly8z4hhs4gpq3uja\",\n    \"index\" : 4265740550686910933,\n    \"message\" : {\n      \"role\" : \"system\",\n      \"content\" : \"Ea aut qui aut. Omnis eos aliquid mollitia nostrum magni et corporis. Soluta voluptatem quidem fuga. Minus non ullam. Pariatur beatae et cum aut. Quibusdam aut officiis et. Ut dolores porro. Deserunt cupiditate ut ab voluptates.\"\n    }\n  } ],\n  \"object\" : \"r4031lu9bt4n6pszmr636elk0gcf0j7xoep5izy3sdqs70pp34mm6xz55su0ya24y3arnqz1tzhuzvvjn\"\n}",
+      "headers" : {
+        "Content-Type" : "application/json"
+      }
+    },
+    "uuid" : "0b479fde-6991-4c73-bfc2-b7ca9c7e18fa",
+    "persistent" : true,
+    "metadata" : {
+      "mocklab" : {
+        "created" : {
+          "at" : "2023-03-28T09:23:28.166488Z",
+          "via" : "OAS3_IMPORT"
+        },
+        "oas" : {
+          "operationId" : "createChatCompletion",
+          "schema" : {
+            "properties" : {
+              "choices" : {
+                "items" : {
+                  "properties" : {
+                    "finish_reason" : {
+                      "type" : "string"
+                    },
+                    "index" : {
+                      "type" : "integer"
+                    },
+                    "message" : {
+                      "$ref" : "#/components/schemas/ChatCompletionResponseMessage"
+                    }
+                  },
+                  "type" : "object"
+                },
+                "type" : "array"
+              },
+              "created" : {
+                "type" : "integer"
+              },
+              "id" : {
+                "type" : "string"
+              },
+              "model" : {
+                "type" : "string"
+              },
+              "object" : {
+                "type" : "string"
+              },
+              "usage" : {
+                "properties" : {
+                  "completion_tokens" : {
+                    "type" : "integer"
+                  },
+                  "prompt_tokens" : {
+                    "type" : "integer"
+                  },
+                  "total_tokens" : {
+                    "type" : "integer"
+                  }
+                },
+                "required" : [ "prompt_tokens", "completion_tokens", "total_tokens" ],
+                "type" : "object"
+              }
+            },
+            "required" : [ "id", "object", "created", "model", "choices" ],
+            "type" : "object"
+          }
+        }
+      }
+    },
+    "insertionIndex" : 1
+    }, {
+    "id" : "3f29b0f4-42bc-481e-a4b3-a3e94307f91e",
+    "name" : "Creates a completion for the chat message",
+    "request" : {
+      "urlPath" : "/chat/completions",
+      "method" : "POST"
+    },
+    "response" : {
+      "status" : 200,
+      "body" : "{\n  \"data\" : [ {\n    \"prompt\" : \"The capital of France is Paris\",\n    \"output\" : [ \"Ea aut qui aut. Omnis eos aliquid mollitia nostrum magni et corporis. Soluta voluptatem quidem fuga. Minus non ullam. Pariatur beatae et cum aut. Quibusdam aut officiis et. Ut dolores porro. Deserunt cupiditate ut ab voluptates.\" ],\n    \"params\" : {\n \"tempature\" : \"0.7\"\n}\n}\n], \"message\" : \"ok\"\n}",
+      "headers" : {
+        "Content-Type" : "application/json"
+      }
+    },
+    "uuid" : "3f29b0f4-42bc-481e-a4b3-a3e94307f91e",
+    "persistent" : true,
+    "metadata" : {
+      "mocklab" : {
+        "created" : {
+          "at" : "2023-03-28T09:23:28.166488Z",
+          "via" : "OAS3_IMPORT"
+        },
+        "oas" : {
+          "operationId" : "createChatCompletion",
+          "schema" : {
+            "properties" : {
+              "choices" : {
+                "items" : {
+                  "properties" : {
+                    "finish_reason" : {
+                      "type" : "string"
+                    },
+                    "index" : {
+                      "type" : "integer"
+                    },
+                    "message" : {
+                      "$ref" : "#/components/schemas/ChatCompletionResponseMessage"
+                    }
+                  },
+                  "type" : "object"
+                },
+                "type" : "array"
+              },
+              "created" : {
+                "type" : "integer"
+              },
+              "id" : {
+                "type" : "string"
+              },
+              "model" : {
+                "type" : "string"
+              },
+              "object" : {
+                "type" : "string"
+              },
+              "usage" : {
+                "properties" : {
+                  "completion_tokens" : {
+                    "type" : "integer"
+                  },
+                  "prompt_tokens" : {
+                    "type" : "integer"
+                  },
+                  "total_tokens" : {
+                    "type" : "integer"
+                  }
+                },
+                "required" : [ "prompt_tokens", "completion_tokens", "total_tokens" ],
+                "type" : "object"
+              }
+            },
+            "required" : [ "id", "object", "created", "model", "choices" ],
+            "type" : "object"
+          }
+        }
+      }
+    },
+    "insertionIndex" : 2
+  } ]
+}

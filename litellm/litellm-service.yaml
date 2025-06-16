@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: litellm-lb
+  namespace: litellm
+  annotations:
+    "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "ip"
+    service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=false
+    #service.beta.kubernetes.io/aws-load-balancer-subnets: subnet-0971dc10338e97fa1
+
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: litellm
+  ports:
+    - protocol: TCP
+      port: 4000
+      targetPort: 4000
+      name: litellm

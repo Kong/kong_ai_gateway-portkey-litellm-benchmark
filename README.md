@@ -19,3 +19,6 @@ To have your own deployment and run the same tests read the instructs described 
 3. [WireMock](./3.%20WireMock/wiremock.md)
 4. [Kong Gateway Enterprise](./4.%20Kong%20Gateway%20Enterprise/kong_gateway_enterprise.md)
 5. [K6](./5.%20K6/k6.md)
+6. [Konnect](./6.%20Konnect/konnect.md)
+7. [Portkey](./7.%20Portkey/portkey.md)
+8. [LiteLLM](./8.%20LiteLLM/litellm.md)

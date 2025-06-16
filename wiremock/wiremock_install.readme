@@ -1,0 +1,52 @@
+helm repo add wiremock https://wiremock.github.io/helm-charts
+
+helm uninstall wiremock -n wiremock
+kubectl delete namespace wiremock
+
+helm install wiremock wiremock/wiremock -n wiremock \
+  --create-namespace \
+  --set service.type=ClusterIP \
+  --set resources.requests.cpu=4 \
+  --set resources.requests.memory=8Gi \
+  --set resources.limits.cpu=16 \
+  --set resources.limits.memory=32Gi
+
+kubectl logs -f $(kubectl get pod -n wiremock -o json | jq -r '.items[].metadata | select(.name | startswith("wiremock-"))' | jq -r '.name') -n wiremock
+
+
+cat <<EOF > wiremock-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: wiremock-lb
+  namespace: wiremock
+  annotations:
+    "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "ip"
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: wiremock
+  ports:
+    - protocol: TCP
+      port: 9021
+      targetPort: 9021
+      name: wiremock
+EOF
+
+kubectl delete -f wiremock-service.yaml
+kubectl apply -f wiremock-service.yaml
+
+
+export WIREMOCK_NLB=$(kubectl get service -n wiremock wiremock-lb --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+
+kubectl port-forward service/wiremock -n wiremock 9021
+http $WIREMOCK_NLB:9021
+http $WIREMOCK_NLB:9021/__admin/mappings
+
+http $WIREMOCK_NLB:9021/__admin/mappings | jq '.mappings[].request'
+
+curl -v -d@openai.com-stubs-new.json http://$WIREMOCK_NLB:9021/__admin/mappings/import
+
+http $WIREMOCK_NLB:9021/__admin/mappings | jq '.mappings[].request'

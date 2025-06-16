@@ -1,0 +1,54 @@
+_format_version: "3.0"
+_info:
+  select_tags:
+  - ai-gateway-svc
+services:
+- name: upstream
+  enabled: true
+  host: k8s-upstream-upstream-4e93766628-75260749939f722a.elb.us-east-2.amazonaws.com
+  port: 8000
+  protocol: http
+  routes:
+  - name: upstream_route
+    paths:
+    - /upstream_route
+    preserve_host: false
+    protocols:
+    - http
+    strip_path: true
+- name: llm
+  enabled: true
+  host: k8s-upstream-upstream-4e93766628-75260749939f722a.elb.us-east-2.amazonaws.com
+  port: 8000
+  protocol: http
+  routes:
+  - name: llm_route
+    paths:
+    - /llm_route
+    methods:
+    - POST
+    plugins:
+    - name: ai-proxy-advanced
+      instance_name: ai-proxy-advanced1
+      config:
+        targets:
+        - model:
+            provider: openai
+            name: gpt-4
+            options:
+              upstream_url: "http://k8s-wiremock-wiremock-8b41de82d6-d2bb94ac89bc331e.elb.us-east-2.amazonaws.com:9021/chat"
+          route_type: "llm/v1/chat"
+    - name: key-auth
+      enabled: true
+    - name: ai-rate-limiting-advanced
+      enabled: true
+      _config: ratelimiting-ai
+    #- name: ai-semantic-cache
+    #  enabled: true
+    #  _config: semanticcache-ai
+consumers:
+- username: consumer1
+  keyauth_credentials:
+  - key: "123456"
+
+

@@ -1,0 +1,16 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: litellm-sc
+provisioner: ebs.csi.aws.com
+volumeBindingMode: Immediate
+parameters:
+  fsType: ext4
+  type: gp3
+reclaimPolicy: Delete
+allowVolumeExpansion: true
+#allowedTopologies:
+#- matchLabelExpressions:
+#  - key: topology.kubernetes.io/zone
+#    values:
+#    - us-east-2a

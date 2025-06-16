@@ -1,0 +1,58 @@
+kind: KonnectExtension
+apiVersion: konnect.konghq.com/v1alpha1
+metadata:
+ name: konnect-config1
+ namespace: kong
+spec:
+ clientAuth:
+   certificateSecret:
+     provisioning: Automatic
+ konnect:
+   controlPlane:
+     ref:
+       type: konnectNamespacedRef
+       konnectNamespacedRef:
+         name: ai-gateway
+---
+apiVersion: gateway-operator.konghq.com/v1beta1
+kind: DataPlane
+metadata:
+ name: dataplane1
+ namespace: kong
+spec:
+ extensions:
+ - kind: KonnectExtension
+   name: konnect-config1
+   group: konnect.konghq.com
+ deployment:
+   replicas: 3
+   podTemplateSpec:
+     spec:
+       containers:
+       - name: proxy
+         image: kong/kong-gateway:3.10.0.2
+         resources:
+           requests:
+             cpu: 1
+             memory: "2Gi"
+           limits:
+             cpu: 4
+             memory: "3Gi"
+         env:
+           - name: KONG_LOG_LEVEL
+             value: notice
+           - name: KONG_PROXY_ACCESS_LOG
+             value: "off"
+           - name: KONG_NGINX_WORKER_PROCESSES
+             value: "4"
+       nodeSelector:
+         "alpha.eksctl.io/nodegroup-name": "node-ai-gateway"
+ network:
+   services:
+     ingress:
+       name: proxy1
+       type: LoadBalancer
+       annotations:
+         "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+         "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "ip"
+         #service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=false

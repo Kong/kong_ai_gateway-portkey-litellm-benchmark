@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wiremock-lb
+  namespace: wiremock
+  annotations:
+    "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "ip"
+    service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: preserve_client_ip.enabled=false
+
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: wiremock
+  ports:
+    - protocol: TCP
+      port: 9021
+      targetPort: 9021
+      name: wiremock
