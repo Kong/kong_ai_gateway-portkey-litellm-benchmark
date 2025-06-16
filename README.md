@@ -1,4 +1,4 @@
-This is a performance benchmark comparing Kong AI Gateway with Portkey and LiteLLM.
+### Benchmark tests with Kong AI Gateway with Portkey and LiteLLM.
 
 The benchmark tests were executed in AWS. The server infrastructure ran on an Amazon Elastic Kubernetes Service (EKS) cluster, 1.32. In order to have  better control over the AI Gateways and remove the native LLM infrastructure variables, such as latency time and throughput, we mocked an LLM with WireMock to expose OpenAI-based endpoints. WireMock is an open-source tool used to simulate API responses.
 
