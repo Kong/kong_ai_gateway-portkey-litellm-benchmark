@@ -84,13 +84,10 @@ proxy_config:
     #- model_name: gpt-4
     #  litellm_params:
     #    model: gpt-4
-    #    api_key: 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
     - model_name: wiremock
       litellm_params:
         model: custom/wiremock/wiremock
         api_base: http://k8s-wiremock-wiremock-8b41de82d6-d2bb94ac89bc331e.elb.us-east-2.amazonaws.com:9021/chat/completions
-        #api_key: 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
-        #OPENAI_API_KEY: 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
   general_settings:
   #  master_key: os.environ/PROXY_MASTER_KEY
 
