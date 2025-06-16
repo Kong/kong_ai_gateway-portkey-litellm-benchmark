@@ -14,4 +14,4 @@ Lastly, K6 played the load generator role, running on an EC2 instance deployed i
 
 To have your own deployment and run the same tests read the instructs described in the following order:
 
-1. AWS and EKS
+1. [AWS and EKS](https://docs.konghq.com/gateway-operator/) )
