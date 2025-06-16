@@ -1,0 +1,110 @@
+image:
+  repository: kong/kong-gateway
+  tag: "3.10"
+
+env:
+  database: postgres
+  role: control_plane
+  #cluster_ca_cert: /etc/secrets/kong-cluster-cert/tls.crt
+  cluster_cert: /etc/secrets/kong-cluster-cert/tls.crt
+  cluster_cert_key: /etc/secrets/kong-cluster-cert/tls.key
+  #cluster_mtls: pki
+  #lua_ssl_trusted_certificate: system
+  #konnect_mode: "off"
+  vitals: "off"
+  nginx_worker_processes: "1"
+  upstream_keepalive_max_requests: "100000"
+  nginx_http_keepalive_requests: "100000"
+  proxy_access_log: "off"
+  dns_stale_ttl: "3600"
+
+cluster:
+  enabled: true
+  tls:
+    enabled: true
+    servicePort: 8005
+    containerPort: 8005
+
+clustertelemetry:
+  enabled: true
+  tls:
+    enabled: true
+    servicePort: 8006
+    containerPort: 8006
+
+proxy:
+  enabled: true
+  type: ClusterIP
+  tls:
+    enabled: false
+
+admin:
+  enabled: true
+  http:
+    enabled: true
+  type: LoadBalancer
+  annotations:
+    "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+    "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing"
+    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "ip"
+
+enterprise:
+  enabled: true
+  portal:
+    enabled: false
+  smtp:
+    enabled: false
+  license_secret: kong-enterprise-license
+
+manager:
+  enabled: true
+  tls:
+    enabled: false
+  type: LoadBalancer
+  annotations:
+    "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
+    "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing"
+    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "ip"
+
+portal:
+  enabled: false
+
+portalapi:
+  enabled: false
+
+postgresql:
+  enabled: true
+  postgresqlUsername: kong
+  postgresqlDatabase: kong
+  postgresqlPassword: kong
+  primary:
+    persistence:
+      #storageClass: "ebs-sc"
+      storageClass: "gp2"
+    #nodeSelector:
+    #  "alpha.eksctl.io/nodegroup-name": "node-kong"
+    #tolerations:
+    #- key: "dedicated"
+    #  value: "kong"
+    #  effect: "NoSchedule"
+
+secretVolumes:
+- kong-cluster-cert
+
+ingressController:
+  enabled: false
+  installCRDs: false
+
+resources:
+  requests:
+    cpu: 1
+    memory: "2Gi"
+
+#nodeSelector:
+#  "alpha.eksctl.io/nodegroup-name": "node-kong"
+
+#tolerations:
+#- key: "dedicated"
+#  value: "kong"
+#  effect: "NoSchedule"
+
