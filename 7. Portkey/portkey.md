@@ -41,7 +41,6 @@ kubectl logs -f $(kubectl get pod -n portkey -o json | jq -r '.items[].metadata.
 
 export PORTKEY_LB=$(kubectl get service -n portkey -o json | jq -r '.items[].status.loadBalancer.ingress[].hostname')
 
-export OPENAI_KEY=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
 
 
 
