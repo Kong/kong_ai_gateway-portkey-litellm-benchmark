@@ -36,7 +36,7 @@ ssh -i "acquaviva-us-east-2.pem" ubuntu@$EC2_DNS_NAME
 ```
 
 
-### Install utilities
+## Install utilities
 ```
 sudo su
 
@@ -44,14 +44,14 @@ apt-get update
 apt-get -y install httpie jq
 ```
 
-#### kubectl
+### kubectl
 ```
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
 install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
 
-#### AWS CLI
+### AWS CLI
 ```
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
@@ -63,13 +63,43 @@ aws configure
 aws eks update-kubeconfig --name kong310-eks132 --region us-east-2
 ```
 
-#### decK
+### decK
 ```
 wget https://github.com/Kong/deck/releases/download/v1.47.1/deck_1.47.1_linux_amd64.tar.gz
 
 tar xvf deck_1.47.1_linux_amd64.tar.gz
 mv ./deck /usr/local/bin
 ```
+
+
+## K6
+
+A VU is an independent thread of execution that runs concurrently to other VU threads. Often, scripts are designed in such a way that one VU activity represents that of one real user.
+
+```
+gpg -k
+
+gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+
+echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+
+apt-get update
+
+apt-get install k6
+
+cp /usr/bin/k6 /usr/local/bin
+
+k6 version
+k6 v1.0.0 (commit/41b4984b75, go1.24.2, linux/amd64)
+```
+
+
+
+
+
+
+
+
 
 
 
