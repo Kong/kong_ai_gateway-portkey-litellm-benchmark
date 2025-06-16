@@ -1,0 +1,15 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: kong310-eks132
+  region: us-east-2
+  version: "1.32"
+
+managedNodeGroups:
+  - name: node-tools
+    instanceType: c5.xlarge
+    minSize: 1
+    maxSize: 8
+    ssh:
+      publicKeyName: acquaviva-us-east-2
