@@ -16,4 +16,5 @@ To have your own deployment and run the same tests read the instructs described 
 
 1. [AWS and EKS](./1.%20AWS-EKS/aws-eks.md)
 2. [Load Generator](./2.%20Load%20Generator/load_generator.md)
-3. [Kong Gateway Enterprise](./3.%20Kong%20Gateway%20Enterprise/kong_gateway_enterprise.md)
+3. [WireMock](./3.%20WireMock/wiremock.md)
+4. [Kong Gateway Enterprise](./4.%20Kong%20Gateway%20Enterprise/kong_gateway_enterprise.md)
