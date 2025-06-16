@@ -23,7 +23,6 @@ kubectl delete secret ghcr-secret -n portkey
 kubectl create secret docker-registry ghcr-secret -n portkey \
   --docker-server=ghcr.io \
   --docker-username=cacquaviva \
-  --docker-password=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 \
   --docker-email=claudio.acquaviva@gmail
 
 
