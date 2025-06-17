@@ -1,22 +1,13 @@
-WireMock
+# WireMock
+
+We are going to mock an OpenAI based LLM infrastructure with WireMock.
 
 
-Node
+## Create a Node for WireMock
 
-helm uninstall ollama -n ollama
-kubectl delete namespace ollama
+WireMock runs on a specific Node so it doesn't compete for resources with the AI Gateways.
 
-eksctl delete nodegroup --cluster kong310-eks132 --name node-llm --drain=false --region us-east-2
-
-   --node-type g6.xlarge \
-   --node-type g6.12xlarge \
-   --node-type g6e.xlarge \
-   --node-type p4d.24xlarge \
-   --node-type c5.xlarge \
-
-  --node-zones=us-east-2a \
-
-
+```
 eksctl create nodegroup --cluster kong310-eks132 \
   --region us-east-2 \
   --name node-llm \
@@ -26,46 +17,19 @@ eksctl create nodegroup --cluster kong310-eks132 \
   --nodes-min 1 --nodes-max 128 \
   --max-pods-per-node 50 \
   --ssh-access --ssh-public-key acquaviva-us-east-2
+```
 
 
+## Install WireMock
 
-
-aws ec2 describe-instances --region us-east-2 --filters "Name=tag:Name,Values=kong310-eks132-node-llm-Node" --query "Reservations[].Instances[].PublicDnsName"
-[
-    "ec2-13-58-186-242.us-east-2.compute.amazonaws.com"
-]
-
-
-
-
-
-
-
-
-ssh -i "acquaviva-us-east-2.pem" ec2-user@ec2-13-58-186-242.us-east-2.compute.amazonaws.com
-
-
-sudo iptables-save | grep ollama
-
-
-Install WireMock
-
-https://wiremock.org/docs/standalone/admin-api-reference/
-https://docs.wiremock.io/overview
-https://docs.wiremock.io/openAPI/openapi
-https://wiremock.org/docs/
-https://github.com/wiremock/helm-charts
-https://github.com/wiremock/api-template-library
-
-
-
-
+```
 helm repo add wiremock https://wiremock.github.io/helm-charts
 helm repo update
+````
 
-helm uninstall wiremock -n wiremock
-kubectl delete namespace wiremock
+Note we use the nodeSelector option to drive the deployment to the specific EKS Node.
 
+```
 helm install wiremock wiremock/wiremock -n wiremock \
   --create-namespace \
   --set service.type=ClusterIP \
@@ -74,10 +38,16 @@ helm install wiremock wiremock/wiremock -n wiremock \
   --set resources.limits.cpu=16 \
   --set resources.limits.memory=32Gi \
   --set nodeSelector."alpha\.eksctl\.io/nodegroup-name"=node-llm
+```
 
+You can check WireMock's logs with:
+```
 kubectl logs -f $(kubectl get pod -n wiremock -o json | jq -r '.items[].metadata | select(.name | startswith("wiremock-"))' | jq -r '.name') -n wiremock
+```
 
+Create a NLB for WireMock
 
+```
 cat <<EOF > wiremock-service.yaml
 apiVersion: v1
 kind: Service
@@ -99,6 +69,7 @@ spec:
       targetPort: 9021
       name: wiremock
 EOF
+```
 
 kubectl delete -f wiremock-service.yaml
 kubectl apply -f wiremock-service.yaml
