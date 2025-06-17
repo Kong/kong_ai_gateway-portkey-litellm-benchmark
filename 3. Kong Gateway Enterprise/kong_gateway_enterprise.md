@@ -97,12 +97,18 @@ The Data Plane uses the [dp_values.yaml](../kong/dp_values.yaml) file:
 helm install kong kong/kong -n kong-dp --values ./dp_values.yaml
 ```
 
+#### NLB
+
 As you can see, we instantiate an NLB using the ``service.beta.kubernetes.io/aws-load-balancer-nlb-target-type`` annotation in ``IP target mode``. From the [AWS Load Balancer documentation](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.12/guide/service/annotations/#traffic-routing):
 
 * <b>Instance mode</b> will route traffic to all EC2 instances within cluster on the NodePort opened for your service. The kube-proxy on the individual worker nodes sets up the forwarding of the traffic from the NodePort to the pods behind the service.
 
 * <b>IP mode</b> will route traffic directly to the pod IP. In this mode, AWS NLB sends traffic directly to the Kubernetes pods behind the service, eliminating the need for an extra network hop through the worker nodes in the Kubernetes cluster.
 
+#### Replica Count and CPU allocation
+The declaration is set to spin up 3 replicaset of the Data Plane, with ``nginx_worker_processes: "4"`` meaning that 4 CPUs will be allocate per replica so the Data Plane layer will have the total of 12 CPUs allocated.
+
+The ``resources.limits`` setting prevents the Data Plane replica to allocate more than 4 CPUs.
 
 
 #### Check DP's logs
@@ -112,8 +118,9 @@ kubectl logs -f $(kubectl get pod -n kong-dp -o json | jq -r '.items[].metadata 
 ```
 
 #### Checking the Data Plane from the Control Plane
+```
 http $CONTROLPLANE_LB:8001/clustering/status
-
+```
 
 #### Checking the Proxy
 Inside the K6's EC2 use the Internal NLB created during the deployment
