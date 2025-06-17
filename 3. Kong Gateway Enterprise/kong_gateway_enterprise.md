@@ -97,6 +97,15 @@ The Data Plane uses the [dp_values.yaml](../kong/dp_values.yaml) file:
 helm install kong kong/kong -n kong-dp --values ./dp_values.yaml
 ```
 
+As you can see, we instantiate an NLB using the ``service.beta.kubernetes.io/aws-load-balancer-nlb-target-type`` annotation in ``IP target mode``. From the [AWS Load Balancer documentation](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.12/guide/service/annotations/#traffic-routing):
+
+* Instance mode
+Instance mode will route traffic to all EC2 instances within cluster on the NodePort opened for your service. The kube-proxy on the individual worker nodes sets up the forwarding of the traffic from the NodePort to the pods behind the service.
+
+* IP mode
+IP mode will route traffic directly to the pod IP. In this mode, AWS NLB sends traffic directly to the Kubernetes pods behind the service, eliminating the need for an extra network hop through the worker nodes in the Kubernetes cluster.
+
+
 
 #### Check DP's logs
 
