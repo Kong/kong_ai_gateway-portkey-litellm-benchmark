@@ -10,18 +10,21 @@ openssl req -new -x509 -nodes -newkey ec:<(openssl ecparam -name secp384r1) \
 
 ## Control Plane
 
-```
-helm uninstall kong-cp -n kong-cp
-kubectl delete pvc data-kong-cp-postgresql-0 -n kong-cp
-kubectl delete namespace kong-cp
+You have to have a Kong Gateway Enterprise license to properly install it. Please, contact [Kong's Sales Team](https://konghq.com/contact-sales) to get one.
 
+```
 kubectl create namespace kong-cp
 
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-cp
 
 kubectl create secret generic kong-enterprise-license -n kong-cp --from-file=./license
+```
 
+### Installation
 
+The Control Plane instasll uses the following [cp_values](../kong/cp_values.yaml) file:
+
+```
 helm install kong-cp kong/kong -n kong-cp --values ./cp_values.yaml
 ```
 
