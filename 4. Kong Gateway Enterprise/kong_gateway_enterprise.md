@@ -171,3 +171,49 @@ http $DATAPLANE_LB
 http $DATAPLANE_LB/upstream_route/json/valid
 
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Send requests to Data Plane
+https://platform.openai.com/docs/api-reference/chat/create
+https://platform.openai.com/docs/api-reference/chat/create#chat-create-max_completion_tokens
+
+
+kubectl scale deployment kong-kong -n kong-dp --replicas=3
+
+export DATAPLANE_LB=$(kubectl get service -n kong-dp kong-kong-proxy --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+kubectl logs -f $(kubectl get pod -n kong-dp -o json | jq -r '.items[].metadata | select(.name | startswith("kong-"))' | jq -r '.name') -n kong-dp
+
+
+curl -i --request POST \
+  --url http://$DATAPLANE_LB/llm_route \
+  --header 'Content-Type: application/json' \
+  --data '{
+     "messages": [
+       {
+         "role": "user",
+         "content": "'"$PROMPT"'"
+       }
+     ]
+}'
+
+ | jq '.choices[].message.content'
+
+
+
+     "max_completion_tokens": 200
+
+
+
