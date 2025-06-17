@@ -58,6 +58,8 @@ open -a "Google Chrome" "http://${MANAGER_LB}:8002"
 
 ## Data Plane
 
+Kong Gateway Enterprise's Data Plane runs on a different EKS Node. So, le'ts create it:
+
 ### EKS Node
 ```
 eksctl create nodegroup -f - <<EOF
