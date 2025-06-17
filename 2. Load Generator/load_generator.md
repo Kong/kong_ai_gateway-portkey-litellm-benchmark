@@ -1,4 +1,4 @@
-# K6 - Load Generator
+# K6 - Load Generator Installation
 
 ## EC2 Instance
 
@@ -60,11 +60,18 @@ unzip awscliv2.zip
 ./aws/install
 
 aws configure
+```
 
+Update your kubeconfig file with your EKS Cluster reference
+
+```
 aws eks update-kubeconfig --name kong310-eks132 --region us-east-2
 ```
 
 ### decK
+
+Install [decK](https://docs.konghq.com/deck/) (declaration for Kong)
+
 ```
 wget https://github.com/Kong/deck/releases/download/v1.47.1/deck_1.47.1_linux_amd64.tar.gz
 
@@ -75,7 +82,6 @@ mv ./deck /usr/local/bin
 
 ## K6
 
-A VU is an independent thread of execution that runs concurrently to other VU threads. Often, scripts are designed in such a way that one VU activity represents that of one real user.
 
 ```
 gpg -k
@@ -89,40 +95,11 @@ apt-get update
 apt-get install k6
 
 cp /usr/bin/k6 /usr/local/bin
+```
 
-k6 version
+Check K6 version
+
+```
+# k6 version
 k6 v1.0.0 (commit/41b4984b75, go1.24.2, linux/amd64)
-```
-
-
-
-
-
-
-
-
-
-
-```
-
-export CONTROLPLANE_LB=$(kubectl get svc -n kong-cp kong-cp-kong-admin --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-http $CONTROLPLANE_LB:8001 | jq -r '.version'
-
-
-deck gateway ping --kong-addr http://$CONTROLPLANE_LB:8001
-deck gateway sync --kong-addr http://$CONTROLPLANE_LB:8001 ./kong.yaml
-
-
-
-export DATAPLANE_LB=$(kubectl get service kong-kong-proxy -n kong-dp --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-
-kubectl get service -n kong-dp kong-kong-proxy --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-a4c687dccbe484757bbc8a38870b0194-1042085709.us-east-2.elb.amazonaws.com
-
-
-http $DATAPLANE_LB
-http $DATAPLANE_LB/upstream_route/json/valid
-
 ```

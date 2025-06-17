@@ -139,3 +139,35 @@ export DATAPLANE_LB=$(kubectl get service -n kong-dp kong-kong-proxy --output=js
 
 http $DATAPLANE_LB
 ```
+
+
+
+
+
+
+
+
+
+```
+
+export CONTROLPLANE_LB=$(kubectl get svc -n kong-cp kong-cp-kong-admin --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+http $CONTROLPLANE_LB:8001 | jq -r '.version'
+
+
+deck gateway ping --kong-addr http://$CONTROLPLANE_LB:8001
+deck gateway sync --kong-addr http://$CONTROLPLANE_LB:8001 ./kong.yaml
+
+
+
+export DATAPLANE_LB=$(kubectl get service kong-kong-proxy -n kong-dp --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+
+kubectl get service -n kong-dp kong-kong-proxy --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
+a4c687dccbe484757bbc8a38870b0194-1042085709.us-east-2.elb.amazonaws.com
+
+
+http $DATAPLANE_LB
+http $DATAPLANE_LB/upstream_route/json/valid
+
+```

@@ -15,7 +15,7 @@ Lastly, K6 played the load generator role, running on an EC2 instance deployed i
 To have your own deployment and run the same tests read the instructs described in the following order:
 
 1. [AWS and EKS](./1.%20AWS-EKS/aws-eks.md)
-2. [Load Generator](./2.%20Load%20Generator/load_generator.md)
+2. [Load Generator Installation](./2.%20Load%20Generator/load_generator.md)
 3. [WireMock](./3.%20WireMock/wiremock.md)
 4. [Kong Gateway Enterprise](./4.%20Kong%20Gateway%20Enterprise/kong_gateway_enterprise.md)
 5. [K6](./5.%20K6/k6.md)
