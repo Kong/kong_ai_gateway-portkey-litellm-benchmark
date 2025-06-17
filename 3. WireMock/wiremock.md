@@ -25,7 +25,7 @@ eksctl create nodegroup --cluster kong310-eks132 \
 ```
 helm repo add wiremock https://wiremock.github.io/helm-charts
 helm repo update
-````
+```
 
 Note we use the nodeSelector option to drive the deployment to the specific EKS Node.
 
@@ -45,7 +45,7 @@ You can check WireMock's logs with:
 kubectl logs -f $(kubectl get pod -n wiremock -o json | jq -r '.items[].metadata | select(.name | startswith("wiremock-"))' | jq -r '.name') -n wiremock
 ```
 
-Create a NLB for WireMock
+Create an Internal NLB for WireMock
 
 ```
 cat <<EOF > wiremock-service.yaml
@@ -71,27 +71,41 @@ spec:
 EOF
 ```
 
-kubectl delete -f wiremock-service.yaml
-kubectl apply -f wiremock-service.yaml
+## Test WireMock
 
+You can test WireMock installation port-forwarding its port or hitting it directly from the K6's EC2.
 
-export WIREMOCK_LB=$(kubectl get service -n wiremock wiremock-lb --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-
+### Port-Forward
+```
 kubectl port-forward service/wiremock -n wiremock 9021
+```
+
+In another terminal run
+```
 http $WIREMOCK_LB:9021
 http $WIREMOCK_LB:9021/__admin/mappings
+```
 
-http $WIREMOCK_LB:9021/__admin/mappings | jq '.mappings[].request'
-"/v1/hello"
-"/v1/hello"
-"/v1/hello"
+### K6's EC2
+```
+export WIREMOCK_LB=$(kubectl get service -n wiremock wiremock-lb --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+```
+
+```
+http $WIREMOCK_LB:9021
+http $WIREMOCK_LB:9021/__admin/mappings
+```
 
 
+## Configure WireMock
+
+Now use the [``json``](../wiremock/openai.com-stubs.json) file the configure WireMock with OpenAI based endpoints:
+
+```
 curl -v -d@openai.com-stubs.json http://$WIREMOCK_LB:9021/__admin/mappings/import
 
 http $WIREMOCK_LB:9021/__admin/mappings | jq '.mappings[].request'
-
+```
 
 
 
