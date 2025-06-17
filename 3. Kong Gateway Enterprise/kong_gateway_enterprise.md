@@ -112,7 +112,7 @@ The ``resources.limits`` setting prevents the Data Plane replica to allocate mor
 
 #### Controlling the number of replicas
 
-You can control the number of replicas using ``kubectl`` commands or chaging and applying the declaration again
+You can control the number of replicas using ``kubectl`` commands or chaging and applying the declaration again.
 
 ##### kubectl command
 ```
