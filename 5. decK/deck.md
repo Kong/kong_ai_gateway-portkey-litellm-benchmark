@@ -7,7 +7,7 @@ Ping it first
 deck gateway ping --kong-addr http://$CONTROLPLANE_LB:8001
 ```
 
-Submit the [kong.yaml](../deck/kong.yaml) declaration
+Submit the [kong.yaml](../deck/kong.yaml) declaration. Change the declaration using your WireMock's NLB DNS name.
 ```
 deck gateway sync --kong-addr http://$CONTROLPLANE_LB:8001 ./kong.yaml
 ```
@@ -15,7 +15,7 @@ deck gateway sync --kong-addr http://$CONTROLPLANE_LB:8001 ./kong.yaml
 
 ## Send requests to Data Plane
 
-Make sure you have the ``PROMPT`` environment variable set:
+Make sure you have the ``DATAPLANE_LB`` and ``PROMPT`` environment variables set:
 
 ```
 curl -i --request POST \
