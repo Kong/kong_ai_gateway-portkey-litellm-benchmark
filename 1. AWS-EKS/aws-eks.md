@@ -1,6 +1,13 @@
 # AWS and EKS
 
-## Cluster Creation and Tools Node
+## EKS Cluster Creation and Tools Node
+
+Initially, the EKS Cluster has a single Node where we are going to install the tools and controller necessary for the benchmark including
+* AWS Load Balancer Controller
+* EBS CSI Driver add-on
+* Prometheus
+
+Create an AWS Key Pair to be able to login to the Node if needed.
 
 ```
 eksctl create cluster -f - <<EOF
@@ -26,6 +33,8 @@ EOF
 
 ## Pod Identity
 
+EKS Pod Identity is used to manage the Load Balancerd Controller and EBS CSI Driver Add-On.
+
 ```
 eksctl create addon --cluster kong310-eks132 \
   --region us-east-2 \
@@ -34,6 +43,9 @@ eksctl create addon --cluster kong310-eks132 \
 
 
 ## AWS Load Balancer Controller
+
+To learn mode about the AWS Load Balancer Controller read its [documentation](https://kubernetes-sigs.github.io/aws-load-balancer-controller/latest/)
+
 
 ```
 curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/v2.13.2/docs/install/iam_policy.json
@@ -47,6 +59,8 @@ aws iam create-policy \
 
 
 ### Install AWS Load Balancer Controller
+
+Use your AWS account to install the Load Balancer Controller
 
 ```
 eksctl create podidentityassociation \
@@ -68,6 +82,8 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n ku
 
 
 ## EBS CSI Driver add-on
+
+EBS CSI Driver is required to deploy the Kong Gateway Enterprise database.
 
 ```
 eksctl create addon --cluster kong310-eks132 \
@@ -119,6 +135,6 @@ GRAFANA_LB=$(kubectl get service prometheus-grafana -n prometheus -o json | jq -
 open -a "Google Chrome" "http://${GRAFANA_LB}"
 ```
 
-```
-admin/prom-operator
-```
+To login use Prometheus Stack credentials:
+* User ID: ``admin``
+* Password: ``prom-operator``

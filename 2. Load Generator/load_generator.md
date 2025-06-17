@@ -102,7 +102,7 @@ k6 v1.0.0 (commit/41b4984b75, go1.24.2, linux/amd64)
 
 
 
-
+```
 
 export CONTROLPLANE_LB=$(kubectl get svc -n kong-cp kong-cp-kong-admin --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
@@ -124,3 +124,4 @@ a4c687dccbe484757bbc8a38870b0194-1042085709.us-east-2.elb.amazonaws.com
 http $DATAPLANE_LB
 http $DATAPLANE_LB/upstream_route/json/valid
 
+```
