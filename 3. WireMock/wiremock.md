@@ -110,7 +110,7 @@ http $WIREMOCK_LB:9021/__admin/mappings | jq '.mappings[].request'
 
 ## Send requests to WireMock
 
-We are [4 prompts](./prompts.md) available. For these benchmarks test we use [Prompt #3](./prompts.md)
+We are [4 prompts](./prompts.md) available. For these benchmarks test we use [Prompt #3](./prompts.md#prompt-3-used-for-the-tests)
 Inside K6's EC2 run:
 ```
 curl -s --request POST \
