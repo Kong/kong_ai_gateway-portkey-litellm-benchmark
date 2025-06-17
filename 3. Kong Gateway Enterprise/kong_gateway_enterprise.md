@@ -34,7 +34,7 @@ helm install kong-cp kong/kong -n kong-cp --values ./cp_values.yaml
 kubectl logs -f $(kubectl get pod -n kong-cp -o json | jq -r '.items[].metadata | select(.ownerReferences[0].kind == "ReplicaSet")' | jq -r '.name') -n kong-cp
 ```
 
-### Consumer CP
+### Consume the CP
 ```
 export CONTROLPLANE_LB=$(kubectl get svc -n kong-cp kong-cp-kong-admin --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
@@ -109,88 +109,10 @@ http $CONTROLPLANE_LB:8001/clustering/status
 
 
 #### Checking the Proxy
-Inside the K6's EC2 use the Load Balancer created during the deployment
+Inside the K6's EC2 use the Internal NLB created during the deployment
 
 ```
 export DATAPLANE_LB=$(kubectl get service -n kong-dp kong-kong-proxy --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 
 http $DATAPLANE_LB
 ```
-
-
-
-
-
-
-
-
-
-```
-
-export CONTROLPLANE_LB=$(kubectl get svc -n kong-cp kong-cp-kong-admin --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-http $CONTROLPLANE_LB:8001 | jq -r '.version'
-
-
-deck gateway ping --kong-addr http://$CONTROLPLANE_LB:8001
-deck gateway sync --kong-addr http://$CONTROLPLANE_LB:8001 ./kong.yaml
-
-
-
-export DATAPLANE_LB=$(kubectl get service kong-kong-proxy -n kong-dp --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-
-kubectl get service -n kong-dp kong-kong-proxy --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}'
-a4c687dccbe484757bbc8a38870b0194-1042085709.us-east-2.elb.amazonaws.com
-
-
-http $DATAPLANE_LB
-http $DATAPLANE_LB/upstream_route/json/valid
-
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Send requests to Data Plane
-https://platform.openai.com/docs/api-reference/chat/create
-https://platform.openai.com/docs/api-reference/chat/create#chat-create-max_completion_tokens
-
-
-kubectl scale deployment kong-kong -n kong-dp --replicas=3
-
-export DATAPLANE_LB=$(kubectl get service -n kong-dp kong-kong-proxy --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-kubectl logs -f $(kubectl get pod -n kong-dp -o json | jq -r '.items[].metadata | select(.name | startswith("kong-"))' | jq -r '.name') -n kong-dp
-
-
-curl -i --request POST \
-  --url http://$DATAPLANE_LB/llm_route \
-  --header 'Content-Type: application/json' \
-  --data '{
-     "messages": [
-       {
-         "role": "user",
-         "content": "'"$PROMPT"'"
-       }
-     ]
-}'
-
- | jq '.choices[].message.content'
-
-
-
-     "max_completion_tokens": 200
-
-
-
