@@ -1,6 +1,12 @@
-# Load Generator
+# K6 - Load Generator
 
 ## EC2 Instance
+
+K6 will run on same VPC created by the EKS Cluster on a specific EC2 instance.
+
+Two main settings here are:
+* ``security-group-ids``: it should be the security id set with ``all-traffic - SSH``.
+* ``subnet-id``: it is a public subnet where EKS node were created.
 
 ```
 aws ec2 run-instances \
@@ -9,23 +15,16 @@ aws ec2 run-instances \
   --count 1 \
   --instance-type c6i.4xlarge \
   --key-name acquaviva-us-east-2 \
-  --security-group-ids sg-036cac211b4b31dc0 \
-  --subnet-id subnet-066e88c223eb0c658 \
+  --security-group-ids <YOUR_SECURITY_GROUP_ID> \
+  --subnet-id <YOUR_SUBNET_ID> \
   --associate-public-ip-address \
   --tag-specification 'ResourceType=instance,Tags=[{Key="Name",Value="load-generator"}]' \
   --block-device-mapping '[{"DeviceName":"/dev/xvda","Ebs":{"VolumeSize": 500}}]'
 ```
 
+## Login to the EC2
 
-
-
-  --security-group-ids sg-044277768d92b71d5 # all-traffic - SSH \
-  --subnet-id subnet-0bc95eab7c5fa4691 # public subnet where EKS node is \
-
-
-
-
-
+Use the same AWS Key pair you've created previously
 
 ```
 EC2_ID=$(aws ec2 describe-instances --region us-east-2 --filters "Name=tag:Name,Values=load-generator" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].{ID:InstanceId}" --output text)
@@ -52,6 +51,8 @@ install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
 
 ### AWS CLI
+Configure the AWS CLI with your Access and Secret Keys
+
 ```
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
