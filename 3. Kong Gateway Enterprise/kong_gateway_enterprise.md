@@ -70,19 +70,14 @@ metadata:
   name: kong310-eks132
   region: us-east-2
 
-nodeGroups:
+managedNodeGroups:
   - name: node-ai-gateway
     instanceType: c5.4xlarge
     amiFamily: AmazonLinux2023
-    #availabilityZones: ["us-east-2a"]
     minSize: 1
     maxSize: 8
     ssh:
       publicKeyName: acquaviva-us-east-2
-    kubeletExtraConfig:
-      allowedUnsafeSysctls:
-        - "net.ipv4.tcp_max_tw_buckets"
-        - "net.ipv4.ip_local_port_range"
 EOF
 ```
 
