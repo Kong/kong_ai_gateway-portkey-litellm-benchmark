@@ -110,8 +110,23 @@ The declaration is set to spin up 3 replicaset of the Data Plane, with ``nginx_w
 
 The ``resources.limits`` setting prevents the Data Plane replica to allocate more than 4 CPUs.
 
+#### Controlling the number of replicas
+
+You can control the number of replicas using ``kubectl`` commands or chaging and applying the declaration again
+
+##### kubectl command
+```
+kubectl scale deployment kong-kong -n kong-dp --replicas=3
+```
+
+##### declaration file
+```
+helm upgrade kong kong/kong -n kong-dp --values ./dp_values.yaml
+```
+
 
 #### Check DP's logs
+When running a single replica, you can check its logs with:
 
 ```
 kubectl logs -f $(kubectl get pod -n kong-dp -o json | jq -r '.items[].metadata | select(.name | startswith("kong-"))' | jq -r '.name') -n kong-dp
