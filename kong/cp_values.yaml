@@ -5,12 +5,8 @@ image:
 env:
   database: postgres
   role: control_plane
-  #cluster_ca_cert: /etc/secrets/kong-cluster-cert/tls.crt
   cluster_cert: /etc/secrets/kong-cluster-cert/tls.crt
   cluster_cert_key: /etc/secrets/kong-cluster-cert/tls.key
-  #cluster_mtls: pki
-  #lua_ssl_trusted_certificate: system
-  #konnect_mode: "off"
   vitals: "off"
   nginx_worker_processes: "1"
   upstream_keepalive_max_requests: "100000"
@@ -79,14 +75,7 @@ postgresql:
   postgresqlPassword: kong
   primary:
     persistence:
-      #storageClass: "ebs-sc"
       storageClass: "gp2"
-    #nodeSelector:
-    #  "alpha.eksctl.io/nodegroup-name": "node-kong"
-    #tolerations:
-    #- key: "dedicated"
-    #  value: "kong"
-    #  effect: "NoSchedule"
 
 secretVolumes:
 - kong-cluster-cert
@@ -99,12 +88,4 @@ resources:
   requests:
     cpu: 1
     memory: "2Gi"
-
-#nodeSelector:
-#  "alpha.eksctl.io/nodegroup-name": "node-kong"
-
-#tolerations:
-#- key: "dedicated"
-#  value: "kong"
-#  effect: "NoSchedule"
 
