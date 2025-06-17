@@ -22,7 +22,7 @@ kubectl create secret generic kong-enterprise-license -n kong-cp --from-file=./l
 
 ### Installation
 
-The Control Plane instasll uses the following [cp_values](../kong/cp_values.yaml) file:
+The Control Plane install uses the following [cp_values.yaml](../kong/cp_values.yaml) file.
 
 ```
 helm install kong-cp kong/kong -n kong-cp --values ./cp_values.yaml
@@ -83,56 +83,33 @@ EOF
 
 ### Install Data Plane
 
-Instance mode
-Instance target mode supports pods running on AWS EC2 instances. In this mode, AWS NLB sends traffic to the instances and the kube-proxy on the individual worker nodes forward it to the pods through one or more worker nodes in the Kubernetes cluster.
-
-IP mode
-IP target mode supports pods running on AWS EC2 instances and AWS Fargate. In this mode, the AWS NLB targets traffic directly to the Kubernetes pods behind the service, eliminating the need for an extra network hop through the worker nodes in the Kubernetes cluster.
-
-
-
-
-
-//kubectl create sa kaigateway-podid-sa -n kong-dp
-
-
 ```
-helm uninstall kong -n kong-dp
-kubectl delete namespace kong-dp
-
 kubectl create namespace kong-dp
 
 kubectl create secret tls kong-cluster-cert --cert=./cluster.crt --key=./cluster.key -n kong-dp
 
 kubectl create secret generic kong-enterprise-license -n kong-dp --from-file=./license
+```
 
+The Data Plane uses the [dp_values.yaml](../kong/dp_values.yaml) file:
 
-helm uninstall kong -n kong-dp
+```
 helm install kong kong/kong -n kong-dp --values ./dp_values.yaml
-helm upgrade kong kong/kong -n kong-dp --values ./dp_values.yaml
 ```
 
 
 #### Check DP's logs
 
 ```
-kubectl logs -f $(kubectl get pod -n kong-dp -o json | jq -r '.items[].metadata.name') -n kong-dp
-
 kubectl logs -f $(kubectl get pod -n kong-dp -o json | jq -r '.items[].metadata | select(.name | startswith("kong-"))' | jq -r '.name') -n kong-dp
-
-
-kubectl exec -ti $(kubectl get pod -n kong-dp -o json | jq -r '.items[].metadata | select(.name | startswith("kong-"))' | jq -r '.name') -c proxy -n kong-dp -- /bin/bash
 ```
-
-
-
 
 #### Checking the Data Plane from the Control Plane
 http $CONTROLPLANE_LB:8001/clustering/status
 
 
 #### Checking the Proxy
-Use the Load Balancer created during the deployment
+Inside the K6's EC2 use the Load Balancer created during the deployment
 
 ```
 export DATAPLANE_LB=$(kubectl get service -n kong-dp kong-kong-proxy --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
