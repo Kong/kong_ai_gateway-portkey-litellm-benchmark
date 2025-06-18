@@ -22,7 +22,7 @@ kubectl create secret generic kong-enterprise-license -n kong-cp --from-file=./l
 
 ### Installation
 
-The Control Plane install uses the following [cp_values.yaml](../kong/cp_values.yaml) file.
+The Control Plane installation uses the following [cp_values.yaml](../kong/cp_values.yaml) file.
 
 ```
 helm install kong-cp kong/kong -n kong-cp --values ./cp_values.yaml
