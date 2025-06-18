@@ -9,8 +9,3 @@ parameters:
   type: gp3
 reclaimPolicy: Delete
 allowVolumeExpansion: true
-#allowedTopologies:
-#- matchLabelExpressions:
-#  - key: topology.kubernetes.io/zone
-#    values:
-#    - us-east-2a
