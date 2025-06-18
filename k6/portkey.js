@@ -12,15 +12,6 @@ export const options = {
 
 
 export default function () {
-//    let data = {
-//  "model": "llama3.2:3B",
-//  "prompt": __ENV.PROMPT,
-//  "options": {
-//    "num_predict": 200
-//  },
-//  "stream": false
-//};
-
     let data = {
   "messages": [
     {
@@ -31,21 +22,13 @@ export default function () {
 };
 
     let url;
-    //url = `http://` + __ENV.OLLAMA_NLB + `:11434/api/generate`;
-    //url = `http://` + __ENV.OLLAMA_NLB + `:11434/api/chat`;
-    //url = `http://` + __ENV.DATAPLANE_LB + `/llm_route`;
-    //url = `http://` + __ENV.LITELLM_LB + `:4000/chat/completions`;
     url = `http://` + __ENV.PORTKEY_LB + `:8787/v1/chat`;
-
-
-
 
     let wiremock_url;
     wiremock_url = `http://` + __ENV.WIREMOCK_LB + `:9021`;
 
     let headers = {
        'Content-Type': 'application/json',
-       //'Authorization': 'Bearer sk_1234',
        'x-portkey-provider': 'openai',
        'x-portkey-custom-host': wiremock_url
     };

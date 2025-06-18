@@ -20,12 +20,7 @@ spec:
       containers:
       - name: portkey
         image: portkeyai/gateway:latest
-        #image: ghcr.io/portkey-ai/portkey:latest
-        #image: ghcr.io/acquaorg/portkey:latest
         imagePullPolicy: Always
-        #args: ["uvicorn", "portkey.main:app", "--host", "0.0.0.0", "--port", "8787", "--workers", "4"]
-        #args: ["run", "--", "--host", "0.0.0.0", "--port", "8787", "--workers", "4"]
-        #args: ["--host=0.0.0.0", "--port=8787", "--workers=4"]
         resources:
           requests:
             cpu: 1

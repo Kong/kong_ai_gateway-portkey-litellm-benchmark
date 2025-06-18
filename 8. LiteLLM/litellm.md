@@ -39,7 +39,7 @@ To expose the deployment creates another NLB for it using the [litellm-service](
 kubectl apply -f litellm-service.yaml
 ```
 
-## Checking the logs
+## Check the logs
 
 ```
 kubectl logs -f $(kubectl get pod -n litellm -o json | jq -r '.items[].metadata | select(.ownerReferences[0].kind == "ReplicaSet")' | jq -r '.name') -n litellm
