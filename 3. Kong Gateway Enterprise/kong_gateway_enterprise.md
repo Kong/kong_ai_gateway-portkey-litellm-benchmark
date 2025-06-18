@@ -106,7 +106,7 @@ As you can see, we instantiate an NLB using the ``service.beta.kubernetes.io/aws
 * <b>IP mode</b> will route traffic directly to the pod IP. In this mode, AWS NLB sends traffic directly to the Kubernetes pods behind the service, eliminating the need for an extra network hop through the worker nodes in the Kubernetes cluster.
 
 #### Replica Count and CPU allocation
-The declaration is set to spin up 3 replicaset of the Data Plane, with ``nginx_worker_processes: "4"`` meaning that 4 CPUs will be allocate per replica so the Data Plane layer will have the total of 12 CPUs allocated.
+The declaration is set to spin up 3 replicas of the Data Plane, with ``nginx_worker_processes: "4"`` meaning that 4 CPUs will be allocate per replica so the Data Plane layer will have the total of 12 CPUs allocated.
 
 The ``resources.limits`` setting prevents the Data Plane replica to allocate more than 4 CPUs.
 
