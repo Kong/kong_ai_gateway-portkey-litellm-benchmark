@@ -160,7 +160,7 @@ You should see a response like this:
 k8s-kongdp-kongkong-0df4c97b4a-b778ee5a5d304634.elb.us-east-2.amazonaws.com
 ```
 
-NOw, check the NLB status with the following command.
+Now, check the NLB status with the following command.
 
 ```
 aws elbv2 describe-load-balancers \
