@@ -21,5 +21,5 @@ To have your own deployment and run the same tests read the instructs described 
 5. [decK](./5.%20decK/deck.md)
 6. [K6](./6.%20K6/k6.md)
 7. [Konnect](./7.%20Konnect/kong_gateway_enterprise.md)
-8. [Portkey](./8.%20LiteLLM/litellm.md)
-9. [LiteLLM](./9.%20Portkey/portkey.md)
+8. [LiteLLM](./8.%20LiteLLM/litellm.md)
+9. [Portkey](./9.%20Portkey/portkey.md)
