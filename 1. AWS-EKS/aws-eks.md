@@ -41,6 +41,14 @@ eksctl create addon --cluster kong310-eks132 \
   --name eks-pod-identity-agent
 ```
 
+## Check the Add-Ons
+
+Before installing any Add-On make sure they are ``ACTIVE``:
+
+```
+eksctl get addons --cluster kong310-eks132 --region us-east-2
+```
+
 
 ## AWS Load Balancer Controller
 
@@ -107,7 +115,6 @@ addons:
     - arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy
 EOF
 ```
-
 
 
 
