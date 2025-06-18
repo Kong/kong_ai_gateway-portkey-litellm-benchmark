@@ -40,6 +40,9 @@ ssh -i "acquaviva-us-east-2.pem" ubuntu@$EC2_DNS_NAME
 sudo su
 
 apt-get update
+```
+
+```
 apt-get -y install httpie jq
 ```
 
