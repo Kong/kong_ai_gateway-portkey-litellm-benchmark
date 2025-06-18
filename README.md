@@ -10,6 +10,7 @@ Lastly, K6 played the load generator role, running on an EC2 instance deployed i
 
 
 ![kong](/static/images/architecture.png =100x20)
+<img src="/static/images/architecture.png" width="100" height="100"/>
 
 
 To have your own deployment and run the same tests read the instructs described in the following order:
