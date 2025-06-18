@@ -160,7 +160,7 @@ You should see a response like this:
 k8s-kongdp-kongkong-0df4c97b4a-b778ee5a5d304634.elb.us-east-2.amazonaws.com
 ```
 
-NOw, check the NLB status with the following command. Change the name of the NLB accordingly.
+NOw, check the NLB status with the following command.
 
 ```
 aws elbv2 describe-load-balancers \
@@ -175,7 +175,7 @@ The expected result should be:
 }
 ```
 
-To check the NLB's target groups health status run get the NLB ARN first.
+To check the NLB's target groups health status get the NLB ARN first.
 
 ```
 NLB_ARN=$(aws elbv2 describe-load-balancers \
