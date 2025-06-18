@@ -41,6 +41,71 @@ export CONTROLPLANE_LB=$(kubectl get svc -n kong-cp kong-cp-kong-admin --output=
 http $CONTROLPLANE_LB:8001 | jq -r '.version'
 ```
 
+### Check the NLB
+
+Before accessing any deployment in EKS, make sure your Load Balancer is active and its target groups are healthy.
+
+You can check the NLB status with:
+
+```
+aws elbv2 describe-load-balancers \
+  --region us-east-2 \
+  --query "LoadBalancers[?Type=='network' && contains(LoadBalancerName, 'kongdp')]" | jq '.[].State'
+```
+
+The expected result should be:
+```
+{
+  "Code": "active"
+}
+```
+
+To check the NLB's target groups health status run get the NLB ARN first. Change the name of the NLB accordingly.
+
+```
+NLB_ARN=$(aws elbv2 describe-load-balancers \
+  --region us-east-2 \
+  --query "LoadBalancers[?Type=='network' && contains(LoadBalancerName, 'kongdp')]" | jq -r '.[].LoadBalancerArn')
+```
+
+And the the target groups with:
+```
+for tg in $(aws elbv2 describe-target-groups \
+              --load-balancer-arn $NLB_ARN \
+              --query "TargetGroups[].TargetGroupArn" \
+              --output text); do
+  echo "Target Group: $tg"
+  aws elbv2 describe-target-health --target-group-arn $tg \
+    --query "TargetHealthDescriptions[*].[Target.Id,TargetHealth.State]" \
+    --output table
+done
+```
+  
+You should be a response similar this:
+
+```
+Target Group: arn:aws:elasticloadbalancing:us-east-2:<YOUR_AWS_ACCOUNT>:targetgroup/k8s-kongdp-kongkong-91d269e90f/36ca648868919bc2
+-------------------------------
+|    DescribeTargetHealth     |
++-----------------+-----------+
+|  192.168.62.85  |  healthy  |
+|  192.168.59.202 |  healthy  |
+|  192.168.54.74  |  healthy  |
++-----------------+-----------+
+Target Group: arn:aws:elasticloadbalancing:us-east-2:<YOUR_AWS_ACCOUNT>:targetgroup/k8s-kongdp-kongkong-f8d1a46564/8e53268897b88402
+-------------------------------
+|    DescribeTargetHealth     |
++-----------------+-----------+
+|  192.168.62.85  |  healthy  |
+|  192.168.59.202 |  healthy  |
+|  192.168.54.74  |  healthy  |
++-----------------+-----------+
+```
+
+
+
+
+
 
 ### Configuring Kong Manager Service
 ```
