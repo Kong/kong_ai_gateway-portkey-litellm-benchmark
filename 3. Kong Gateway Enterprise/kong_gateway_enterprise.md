@@ -217,7 +217,7 @@ Target Group: arn:aws:elasticloadbalancing:us-east-2:<YOUR_AWS_ACCOUNT>:targetgr
 +-----------------+-----------+
 ```
 
- And, since we have deployed the NLB with ``IP mode``, the target groups refer to the Pods' IP addresses. You can check the with:
+ And, since we have deployed the NLB with ``IP mode``, the target groups refer to the Pods' IP addresses. You can check them with:
 ```
 kubectl get pod -n kong-dp -o json | jq -r '.items[].status.podIP'
 ````
