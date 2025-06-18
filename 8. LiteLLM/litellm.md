@@ -17,10 +17,15 @@ helm pull oci://ghcr.io/berriai/litellm-helm
 tar -zxvf litellm-helm-0.1.636.tgz
 ```
 
-For the install use the following [values.yaml](../litellm/values.yaml) declaration. The d
+For the install use the following [values.yaml](../litellm/values.yaml) declaration. Its main settings are:
+* ``replicaCount`` to spin up 3 replicas of LiteLLM AI Gateway.
+* ``proxy_config`` configured with WireMock as a [custom provider](https://docs.litellm.ai/docs/providers/custom).
+* ``master_key`` disabled.
+* ``resources`` to limit each replica to allocate up to 4 CPUs.
+* ``nodeSelector`` to make sure LiteLLM deployment will fall into the ``node-ai-gateeway`` EKS Node.
+* ``postgresql`` using the StorageClass previously created and set the ``resourcesPreset`` as ``medium``.
+* ``envVars`` set with [``NUM_WORKERS``](https://docs.litellm.ai/docs/proxy/cli#--num_workers) as ``4`` so each replica can consume the CPUs allocated.
 
-https://docs.litellm.ai/docs/providers/custom
-https://docs.litellm.ai/docs/proxy/cli#--num_workers
 
 ```
 helm install litellm ./litellm-helm -n litellm --create-namespace -f ./values.yaml

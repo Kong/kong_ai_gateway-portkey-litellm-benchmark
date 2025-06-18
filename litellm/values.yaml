@@ -128,11 +128,6 @@ volumeMounts: []
 nodeSelector:
   "alpha.eksctl.io/nodegroup-name": "node-ai-gateway"
 
-#tolerations:
-#- key: "dedicated"
-#  value: "kong"
-#  effect: "NoSchedule"
-
 
 affinity: {}
 
@@ -190,10 +185,6 @@ postgresql:
       storageClass: litellm-sc
     nodeSelector:
       "alpha.eksctl.io/nodegroup-name": "node-ai-gateway"
-    #tolerations:
-    #- key: "dedicated"
-    #  value: "kong"
-    #  effect: "NoSchedule"
 
 # requires cache: true in config file
 # either enable this or pass a secret for REDIS_HOST, REDIS_PORT, REDIS_PASSWORD or REDIS_URL
@@ -213,7 +204,6 @@ migrationJob:
 
 # Additional environment variables to be added to the deployment
 envVars: {
-    # USE_DDTRACE: "true"
     NUM_WORKERS: 4
 }
 
