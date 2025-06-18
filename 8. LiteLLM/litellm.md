@@ -19,7 +19,7 @@ tar -zxvf litellm-helm-0.1.636.tgz
 
 For the install use the following [values.yaml](../litellm/values.yaml) declaration. Its main settings are:
 * ``replicaCount`` to spin up 3 replicas of LiteLLM AI Gateway.
-* ``proxy_config`` configured with WireMock as a [custom provider](https://docs.litellm.ai/docs/providers/custom).
+* ``proxy_config`` configured with WireMock as a [custom provider](https://docs.litellm.ai/docs/providers/custom). Make sure you have changed the ``ai_base`` parameter with your WireMock NLB DNS Name.
 * ``master_key`` disabled.
 * ``resources`` to limit each replica to allocate up to 4 CPUs.
 * ``nodeSelector`` to make sure LiteLLM deployment will fall into the ``node-ai-gateeway`` EKS Node.

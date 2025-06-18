@@ -87,7 +87,7 @@ proxy_config:
     - model_name: wiremock
       litellm_params:
         model: custom/wiremock/wiremock
-        api_base: http://k8s-wiremock-wiremock-8b41de82d6-d2bb94ac89bc331e.elb.us-east-2.amazonaws.com:9021/chat/completions
+        api_base: http://<YOUR_WIREMOCK_NLB>:9021/chat/completions
   general_settings:
   #  master_key: os.environ/PROXY_MASTER_KEY
 
