@@ -84,44 +84,8 @@ k6 run portkey.js
 
 
 
+## Delete the Portkey deployment
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-⚙️ Portkey Performance Summary
-
-Feature		Config Snippet					Benefit
-Connection Pooling	httpx.Client(...)					Faster HTTP performance
-Async Batching	asyncio.gather()					High throughput
-Retry Logic		retry={"max_retries": 3}				Resilience
-Caching		Wrap Portkey call with Redis/memory cache	Reduce duplicate work
-Lightweight Models	Use gpt-3.5-turbo					Speed/cost efficiency
-Server Tuning		--workers 4, async FastAPI				Handle more requests
-
-
-Optimization 		Area Action
-Async handling 	Use asyncio or non-blocking HTTP clients
-Streaming		Enable stream=true for faster perceived output
-API key pool		Balance load across multiple provider keys
-Smart routing		Use provider fallbacks with latency-based priority
-Connection pooling	Use persistent HTTP clients
-Monitoring		Enable logging to track bottlenecks
-
-
-
-
-
+```
 kubectl delete -f portkey_deployment.yaml
-kubectl delete namespace portkey
+```
