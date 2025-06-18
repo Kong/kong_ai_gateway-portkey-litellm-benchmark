@@ -18,14 +18,8 @@ export default function () {
   "stream": false
 };
 
-//    let data = {
-//  "model": "llama3.2:3B",
-//  "prompt": __ENV.PROMPT,
-//  "stream": false
-//};
 
    let url;
-    //url = `http://` + __ENV.OLLAMA_LB + `:11434/api/generate`;
     url = `http://` + __ENV.WIREMOCK_LB + `:9021/chat`;
 
 
@@ -33,9 +27,6 @@ export default function () {
     res = http.post(url, JSON.stringify(data), { timeout: '600s' , headers: {'Content-Type': 'application/json'}});
 
 
-    //check(res, {
-    //   'status is 200 for proxy request': (r) => r.status === 200,
-    //});
     check(res, {
         'status was 200': (r) => r.status == 200,
         'status was 401': (r) => r.status == 401,
