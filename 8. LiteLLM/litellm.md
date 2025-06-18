@@ -22,7 +22,7 @@ For the install use the following [values.yaml](../litellm/values.yaml) declarat
 * ``proxy_config`` configured with WireMock as a [custom provider](https://docs.litellm.ai/docs/providers/custom). Make sure you have changed the ``ai_base`` parameter with your WireMock NLB DNS Name.
 * ``master_key`` disabled.
 * ``resources`` to limit each replica to allocate up to 4 CPUs.
-* ``nodeSelector`` to make sure LiteLLM deployment will fall into the ``node-ai-gateeway`` EKS Node.
+* ``nodeSelector`` to make sure LiteLLM deployment falls into the ``node-ai-gateeway`` EKS Node.
 * ``postgresql`` using the StorageClass previously created and set the ``resourcesPreset`` as ``medium``.
 * ``envVars`` set with [``NUM_WORKERS``](https://docs.litellm.ai/docs/proxy/cli#--num_workers) as ``4`` so each replica can consume the CPUs allocated.
 
@@ -77,6 +77,14 @@ curl -sX POST \
           }
         ]
     }' | jq '.choices[].message.content'
+```
+
+## K6
+
+Inside the K6's EC2 use the [LiteLLM's K6 script](../k6/litellm.js) to run the performance test. Make sure you have the ``DATAPLANE_LB`` environment variable set with the Konnect DP's NLB DNS Name and the ``PROMPT`` environment variable set.
+
+```
+k6 run kong.js
 ```
 
 
