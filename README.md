@@ -9,7 +9,7 @@ Lastly, K6 played the load generator role, running on an EC2 instance deployed i
 
 
 
-<img src="/static/images/architecture.png" width="969" height="826"/>
+<img src="/static/images/architecture.png" width="776" height="660"/>
 
 
 To have your own deployment and run the same tests read the instructs described in the following order:
