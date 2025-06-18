@@ -147,7 +147,7 @@ http $DATAPLANE_LB
 ```
 
 
-## Checking NLBs
+## Important observation: check the NLBs
 
 Before accessing any deployment in EKS, make sure your Load Balancer is active and its target groups are healthy.
 
