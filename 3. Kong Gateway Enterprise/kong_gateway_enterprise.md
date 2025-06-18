@@ -183,7 +183,7 @@ NLB_ARN=$(aws elbv2 describe-load-balancers \
   --query "LoadBalancers[?Type=='network' && contains(LoadBalancerName, 'kongdp')]" | jq -r '.[].LoadBalancerArn')
 ```
 
-And the the target groups with:
+And then check the target groups with:
 ```
 for tg in $(aws elbv2 describe-target-groups \
               --load-balancer-arn $NLB_ARN \
