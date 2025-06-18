@@ -196,7 +196,7 @@ for tg in $(aws elbv2 describe-target-groups \
 done
 ```
   
-You should be a response similar this. Note we have two target groups created, one per port defined in the Kubernetes Service, 80 and 443.
+You should be a response similar to this. Note we have two target groups created, one per port defined in the Kubernetes Service, 80 and 443.
 
 ```
 Target Group: arn:aws:elasticloadbalancing:us-east-2:<YOUR_AWS_ACCOUNT>:targetgroup/k8s-kongdp-kongkong-91d269e90f/36ca648868919bc2
