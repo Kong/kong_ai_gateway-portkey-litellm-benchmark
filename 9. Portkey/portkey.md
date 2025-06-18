@@ -1,19 +1,5 @@
 # Portkey
 
-https://hub.docker.com/r/portkeyai/gateway
-https://portkey.ai/docs/product/open-source
-https://portkey.ai/docs/changelog/open-source
-https://github.com/portkey-ai/gateway
-https://openrouter.ai/
-https://github.com/Portkey-AI/portkey-python-sdk
-https://portkey.ai/blog
-https://github.com/Portkey-AI/gateway/blob/main/docs/installation-deployments.md
-https://portkey.ai/docs/api-reference/admin-api/control-plane/api-keys/create-api-key
-https://www.uvicorn.org/
-https://github.com/Portkey-AI/helm-chart
-https://portkey.ai/docs/api-reference/sdk/python
-
-
 ## Installation
 
 Create a Namespace and apply the [portkey_deployment.yaml](../portkey/portkey_deployment.yaml) declaration. This time we are spinnning up 12 replicas of the AI Gateway allocating 1 CPU per replica. As usual, using ``nodeSelector`` to make sure the deployment goes to the ``node-ai-gateway`` EKS Node.
