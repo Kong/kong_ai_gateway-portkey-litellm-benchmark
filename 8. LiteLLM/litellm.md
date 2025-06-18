@@ -1,17 +1,5 @@
 # LiteLLM
 
-https://docs.litellm.ai/docs/proxy/deploy#kubernetes
-https://docs.litellm.ai/docs/proxy/deploy#helm-chart
-https://github.com/BerriAI/litellm/pkgs/container/litellm-helm
-https://www.digitalocean.com/community/tutorials/how-to-deploy-postgres-to-kubernetes-cluster
-https://docs.litellm.ai/docs/providers/custom
-https://docs.litellm.ai/docs/proxy/cli#--num_workers
-https://docs.litellm.ai/docs/proxy/prod
-https://docs.litellm.ai/docs/benchmarks
-https://docs.litellm.ai/docs/load_test_advanced
-https://docs.litellm.ai/docs/proxy/prod
-https://litellm-api.up.railway.app/
-
 
 ## EKS Storage Class
 LiteLLM requires a Postgres database for its metadata. The following [litellm-storageclass.yaml](../litellm/litellm-storageclass.yaml) declaration creates a new StorageClass for it
@@ -22,14 +10,17 @@ kubectl apply -f ./litellm-storageclass.yaml
 
 ## LiteLLM installation
 
-To install it, we are going to use the Helm Charts provides by LiteLLM
+To install it, we are going to use the [Helm Charts](https://docs.litellm.ai/docs/proxy/deploy#helm-chart) provides by LiteLLM
 
 ```
 helm pull oci://ghcr.io/berriai/litellm-helm
 tar -zxvf litellm-helm-0.1.636.tgz
 ```
 
-For the install use the following [values.yaml](../litellm/values.yaml) declaration:
+For the install use the following [values.yaml](../litellm/values.yaml) declaration. The d
+
+https://docs.litellm.ai/docs/providers/custom
+https://docs.litellm.ai/docs/proxy/cli#--num_workers
 
 ```
 helm install litellm ./litellm-helm -n litellm --create-namespace -f ./values.yaml
