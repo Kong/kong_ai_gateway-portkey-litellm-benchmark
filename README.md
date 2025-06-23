@@ -12,7 +12,7 @@ Lastly, another EKS Node was used to deploy tools and admin components like Prom
 
 
 
-<img src="/static/images/architecture.png" width="496" height="423"/>
+<img src="/static/images/architecture.png" width="757" height="477"/>
 
 
 To have your own deployment and run the same tests read the instructs described in the following order:
