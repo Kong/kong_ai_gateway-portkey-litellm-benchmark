@@ -15,8 +15,6 @@ spec:
       labels:
         app: portkey
     spec:
-      imagePullSecrets:
-        - name: ghcr-secret
       containers:
       - name: portkey
         image: portkeyai/gateway:latest
