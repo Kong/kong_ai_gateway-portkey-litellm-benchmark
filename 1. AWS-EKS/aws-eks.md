@@ -17,6 +17,19 @@ Initially, the EKS Cluster has a single Node where we are going to install the t
 Create an AWS Key Pair to be able to login to the Node if needed.
 
 ```
+aws ec2 create-key-pair \
+    --key-name aig-benchmark \
+    --key-type rsa \
+    --key-format pem \
+    --query "KeyMaterial" \
+    --output text > aig-benchmark.pem
+
+chmod 400 aig-benchmark.pem
+```
+
+Create the EKS cluster. Ensure you use the ssh key you created above, or replace it with your own ssh key. This ssh key will be needed in later steps.
+ 
+```
 eksctl create cluster -f - <<EOF
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
@@ -32,7 +45,7 @@ managedNodeGroups:
     minSize: 1
     maxSize: 8
     ssh:
-      publicKeyName: <your public key name>
+      publicKeyName: aig-benchmark
 EOF
 ```
 

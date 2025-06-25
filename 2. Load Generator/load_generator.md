@@ -14,7 +14,7 @@ aws ec2 run-instances \
   --image-id ami-0cb91c7de36eed2cb \
   --count 1 \
   --instance-type c6i.4xlarge \
-  --key-name acquaviva-us-east-2 \
+  --key-name aig-benchmark \
   --security-group-ids <YOUR_SECURITY_GROUP_ID> \
   --subnet-id <YOUR_SUBNET_ID> \
   --associate-public-ip-address \
@@ -31,7 +31,7 @@ EC2_ID=$(aws ec2 describe-instances --region us-east-2 --filters "Name=tag:Name,
 
 EC2_DNS_NAME=$(aws ec2 describe-instances --region us-east-2 --instance-id $EC2_ID | jq -r ".Reservations[0].Instances[0].PublicDnsName")
 
-ssh -i "acquaviva-us-east-2.pem" ubuntu@$EC2_DNS_NAME
+ssh -i "aig-benchmark.pem" ubuntu@$EC2_DNS_NAME
 ```
 
 
