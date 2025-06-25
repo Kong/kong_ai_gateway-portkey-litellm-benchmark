@@ -1,5 +1,12 @@
 # AWS and EKS
 
+## AWS Region
+If necessary, set your default AWS region. This variable will be used in several scripts.
+
+```
+export AWS_DEFAULT_REGION=<your region>
+```
+
 ## EKS Cluster Creation and Tools Node
 
 Initially, the EKS Cluster has a single Node where we are going to install the tools and controller necessary for the benchmark including
@@ -16,7 +23,7 @@ kind: ClusterConfig
 
 metadata:
   name: kong310-eks132
-  region: us-east-2
+  region: $AWS_DEFAULT_REGION
   version: "1.32"
 
 managedNodeGroups:
@@ -25,7 +32,7 @@ managedNodeGroups:
     minSize: 1
     maxSize: 8
     ssh:
-      publicKeyName: acquaviva-us-east-2
+      publicKeyName: <your public key name>
 EOF
 ```
 
@@ -37,7 +44,7 @@ EKS Pod Identity is used to manage the Load Balancerd Controller and EBS CSI Dri
 
 ```
 eksctl create addon --cluster kong310-eks132 \
-  --region us-east-2 \
+  --region $AWS_DEFAULT_REGION \
   --name eks-pod-identity-agent
 ```
 
@@ -46,7 +53,7 @@ eksctl create addon --cluster kong310-eks132 \
 Before installing any Add-On make sure they are ``ACTIVE``:
 
 ```
-eksctl get addons --cluster kong310-eks132 --region us-east-2
+eksctl get addons --cluster kong310-eks132 --region $AWS_DEFAULT_REGION
 ```
 
 
@@ -61,7 +68,7 @@ curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-cont
 
 ```
 aws iam create-policy \
-    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-name AIGBenchmarkLoadBalancerPolicy \
     --policy-document file://iam_policy.json
 ```
 
@@ -73,17 +80,17 @@ Use your AWS account to install the Load Balancer Controller
 ```
 eksctl create podidentityassociation \
     --cluster kong310-eks132 \
-    --region us-east-2 \
+    --region $AWS_DEFAULT_REGION \
     --namespace kube-system \
     --service-account-name aws-load-balancer-controller \
-    --role-name AWSLoadBalancerControllerIAMRole-kong310-eks132 \
-    --permission-policy-arns arn:aws:iam::<YOUR_AWS_ACCOUNT_ID>:policy/AWSLoadBalancerControllerIAMPolicy
+    --role-name AIGBenchmarkLoadBalancerControllerIAMRole-kong310-eks132 \
+    --permission-policy-arns arn:aws:iam::<YOUR_AWS_ACCOUNT_ID>:policy/AIGBenchmarkLoadBalancerPolicy
 ```
 
 ```
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller -n kube-system \
   --set clusterName=kong310-eks132 \
-  --set region=us-east-2 \
+  --set region=$AWS_DEFAULT_REGION \
   --set serviceAccount.create=true \
   --set serviceAccount.name=aws-load-balancer-controller
 ```
@@ -95,7 +102,7 @@ EBS CSI Driver is required to deploy the Kong Gateway Enterprise database.
 
 ```
 eksctl create addon --cluster kong310-eks132 \
-  --region us-east-2 \
+  --region $AWS_DEFAULT_REGION \
   --name aws-ebs-csi-driver
 ```
 
@@ -105,7 +112,7 @@ apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
 metadata:
   name: kong310-eks132
-  region: us-east-2
+  region: $AWS_DEFAULT_REGION
 addons:
 - name: aws-ebs-csi-driver
   podIdentityAssociations:
@@ -116,7 +123,12 @@ addons:
 EOF
 ```
 
+## kubectl
+In order to perform `kubectl` operations, you will need to set your config to the newly created cluster. You may want to backup your existing configs first.
 
+```
+aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name kong310-eks132
+```
 
 ## Prometheus
 
@@ -130,11 +142,11 @@ helm repo update
 helm install prometheus -n prometheus prometheus-community/kube-prometheus-stack \
 --create-namespace \
 --set alertmanager.enabled=false \
+--set prometheus.prometheusSpec.maximumStartupDurationSeconds=300 \
 --set grafana.service.type=LoadBalancer \
 --set grafana.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-scheme"="internet-facing" \
 --set grafana.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-nlb-target-type"="ip"
 ```
-
 
 ```
 GRAFANA_LB=$(kubectl get service prometheus-grafana -n prometheus -o json | jq -r '.status.loadBalancer.ingress[].hostname')
