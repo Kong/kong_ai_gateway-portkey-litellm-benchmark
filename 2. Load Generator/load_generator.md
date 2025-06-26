@@ -2,7 +2,7 @@
 
 ## EC2 Instance
 
-K6 will be installed on an EC2 running Ubuntu 24.04. The EC2 will run on same VPC created by the EKS Cluster on a specific EC2 instance.
+K6 will be installed on an EC2 running Ubuntu 24.04. The EC2 will run on same VPC created by the EKS Cluster.
 
 Get the AMI Id first. Canonical has a well known owner id as ``099720109477``. The query gets the most recent AMI available.
 ```
