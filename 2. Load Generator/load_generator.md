@@ -4,7 +4,7 @@
 
 K6 will be installed on an EC2 running Ubuntu 24.04. The EC2 will run on same VPC created by the EKS Cluster.
 
-Get the AMI Id first. Canonical has a well known owner id as ``099720109477``. The query gets the most recent AMI available.
+Get the AMI Id first. Canonical has a well known owner id as ``099720109477``. The query gets the ID of the most recent AMI available.
 ```
 AMI_ID=$(aws ec2 describe-images \
   --region us-east-2 \
