@@ -68,7 +68,7 @@ kind: ClusterConfig
 
 metadata:
   name: kong310-eks132
-  region: us-east-2
+  region: $AWS_DEFAULT_REGION
 
 managedNodeGroups:
   - name: node-ai-gateway
@@ -77,7 +77,7 @@ managedNodeGroups:
     minSize: 1
     maxSize: 8
     ssh:
-      publicKeyName: acquaviva-us-east-2
+      publicKeyName: aig-benchmark
 EOF
 ```
 
@@ -164,7 +164,6 @@ Now, check the NLB status with the following command.
 
 ```
 aws elbv2 describe-load-balancers \
-  --region us-east-2 \
   --query "LoadBalancers[?Type=='network' && contains(LoadBalancerName, 'kongdp')]" | jq '.[].State'
 ```
 
@@ -228,3 +227,4 @@ Expect results:
 192.168.54.74
 192.168.59.202
 ```
+

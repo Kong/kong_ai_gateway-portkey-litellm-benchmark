@@ -10,13 +10,13 @@ Two main settings here are:
 
 ```
 aws ec2 run-instances \
-  --region us-east-2 \
-  --image-id ami-0cb91c7de36eed2cb \
+  --region us-west-2 \
+  --image-id ami-05f991c49d264708f \
   --count 1 \
   --instance-type c6i.4xlarge \
   --key-name aig-benchmark \
-  --security-group-ids <YOUR_SECURITY_GROUP_ID> \
-  --subnet-id <YOUR_SUBNET_ID> \
+  --security-group-ids sg-04e9638a180a9feb6 \
+  --subnet-id subnet-0873e2fd2df4c8a4e \
   --associate-public-ip-address \
   --tag-specification 'ResourceType=instance,Tags=[{Key="Name",Value="load-generator"}]' \
   --block-device-mapping '[{"DeviceName":"/dev/xvda","Ebs":{"VolumeSize": 500}}]'
@@ -27,9 +27,9 @@ aws ec2 run-instances \
 Use the same AWS Key pair you've created previously
 
 ```
-EC2_ID=$(aws ec2 describe-instances --region us-east-2 --filters "Name=tag:Name,Values=load-generator" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].{ID:InstanceId}" --output text)
+EC2_ID=$(aws ec2 describe-instances --region us-west-2 --filters "Name=tag:Name,Values=load-generator" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].{ID:InstanceId}" --output text)
 
-EC2_DNS_NAME=$(aws ec2 describe-instances --region us-east-2 --instance-id $EC2_ID | jq -r ".Reservations[0].Instances[0].PublicDnsName")
+EC2_DNS_NAME=$(aws ec2 describe-instances --region us-west-2 --instance-id $EC2_ID | jq -r ".Reservations[0].Instances[0].PublicDnsName")
 
 ssh -i "aig-benchmark.pem" ubuntu@$EC2_DNS_NAME
 ```
@@ -43,7 +43,7 @@ apt-get update
 ```
 
 ```
-apt-get -y install httpie jq
+apt-get -y install httpie jq unzip
 ```
 
 ### kubectl
