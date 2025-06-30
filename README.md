@@ -4,7 +4,7 @@ The benchmark tests were executed in AWS. The server infrastructure ran on an Am
 
 The AI Gateways were exposed to the consumers through a Network Load Balancer (NLB) to protect them from external interference. Similarly, the mocking LLM was exposed with an NLB. In order to not compete for the same hardware (HW) resources, the AI Gateways and WireMock ran in their own EKS Nodes based on the c5.4xlarge instance type with 16 vCPUs and 32GiB of memory.
 
-All AI Gateway deployments had the resource configuration with an upper limit of 12 CPUs. They were deployed with the default configuration, meaning they were not tuned to get better results.
+All AI Gateway deployments had the resource configuration with an upper limit of 12 CPUs. From the performance perspective, they were deployed with the default configuration, meaning they were not tuned to get better results.
 
 
 
