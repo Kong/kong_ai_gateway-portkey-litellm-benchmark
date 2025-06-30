@@ -43,7 +43,6 @@ env:
   nginx_http_keepalive_requests: "100000"
   proxy_access_log: "off"
   dns_stale_ttl: "3600"
-  log_level: notice
 
 replicaCount: 3
   
