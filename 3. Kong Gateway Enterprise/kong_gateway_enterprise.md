@@ -68,7 +68,7 @@ kind: ClusterConfig
 
 metadata:
   name: kong310-eks132
-  region: us-east-2
+  region: $AWS_DEFAULT_REGION
 
 managedNodeGroups:
   - name: node-ai-gateway
@@ -77,7 +77,7 @@ managedNodeGroups:
     minSize: 1
     maxSize: 8
     ssh:
-      publicKeyName: acquaviva-us-east-2
+      publicKeyName: aig-benchmark
 EOF
 ```
 
@@ -164,7 +164,7 @@ Now, check the NLB status with the following command.
 
 ```
 aws elbv2 describe-load-balancers \
-  --region us-east-2 \
+  --region $AWS_DEFAULT_REGION \
   --query "LoadBalancers[?Type=='network' && contains(LoadBalancerName, 'kongdp')]" | jq '.[].State'
 ```
 
@@ -179,24 +179,27 @@ To check the NLB's target groups health status get the NLB ARN first.
 
 ```
 NLB_ARN=$(aws elbv2 describe-load-balancers \
-  --region us-east-2 \
+  --region $AWS_DEFAULT_REGION \
   --query "LoadBalancers[?Type=='network' && contains(LoadBalancerName, 'kongdp')]" | jq -r '.[].LoadBalancerArn')
 ```
 
 And then check the target groups with:
 ```
 for tg in $(aws elbv2 describe-target-groups \
+              --region $AWS_DEFAULT_REGION \
               --load-balancer-arn $NLB_ARN \
               --query "TargetGroups[].TargetGroupArn" \
               --output text); do
   echo "Target Group: $tg"
-  aws elbv2 describe-target-health --target-group-arn $tg \
+  aws elbv2 describe-target-health \
+    --region $AWS_DEFAULT_REGION \
+    --target-group-arn $tg \
     --query "TargetHealthDescriptions[*].[Target.Id,TargetHealth.State]" \
     --output table
 done
 ```
   
-You should be a response similar to this. Note we have two target groups created, one per port defined in the Kubernetes Service, 80 and 443.
+You should see a response similar to this. Note we have two target groups created, one per port defined in the Kubernetes Service, 80 and 443.
 
 ```
 Target Group: arn:aws:elasticloadbalancing:us-east-2:<YOUR_AWS_ACCOUNT>:targetgroup/k8s-kongdp-kongkong-91d269e90f/36ca648868919bc2

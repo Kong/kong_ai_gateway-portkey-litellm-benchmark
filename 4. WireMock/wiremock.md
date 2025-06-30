@@ -9,14 +9,14 @@ WireMock runs on a specific Node so it doesn't compete for resources with the AI
 
 ```
 eksctl create nodegroup --cluster kong310-eks132 \
-  --region us-east-2 \
+  --region $AWS_DEFAULT_REGION \
   --name node-llm \
   --node-labels="nodename=node-llm" \
   --node-type c5.4xlarge \
   --nodes 1 \
   --nodes-min 1 --nodes-max 128 \
   --max-pods-per-node 50 \
-  --ssh-access --ssh-public-key acquaviva-us-east-2
+  --ssh-access --ssh-public-key aig-benchmark
 ```
 
 

@@ -7,7 +7,7 @@ K6 will be installed on an EC2 running Ubuntu 24.04. The EC2 will run on same VP
 Get the AMI Id first. Canonical has a well known owner id as ``099720109477``. The query gets the ID of the most recent AMI available.
 ```
 AMI_ID=$(aws ec2 describe-images \
-  --region us-east-2 \
+  --region $AWS_DEFAULT_REGION \
   --owners 099720109477 \
   --query "Images | sort_by(@, &CreationDate) | [-1].{ID:ImageId}" \
   --filters "Name=description,Values='Canonical, Ubuntu, 24.04, amd64*'" \
@@ -21,11 +21,11 @@ Now, create the EC2 instance. Two main settings here are:
 
 ```
 aws ec2 run-instances \
-  --region us-east-2 \
+  --region $AWS_DEFAULT_REGION \
   --image-id $AMI_ID \
   --count 1 \
   --instance-type c6i.4xlarge \
-  --key-name acquaviva-us-east-2 \
+  --key-name aig-benchmark \
   --security-group-ids <YOUR_SECURITY_GROUP_ID> \
   --subnet-id <YOUR_SUBNET_ID> \
   --associate-public-ip-address \
@@ -38,7 +38,7 @@ aws ec2 run-instances \
 Use the same AWS Key pair you've created previously
 
 ```
-EC2_ID=$(aws ec2 describe-instances --region us-east-2 --filters "Name=tag:Name,Values=load-generator" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].{ID:InstanceId}" --output text)
+EC2_ID=$(aws ec2 describe-instances --region $AWS_DEFAULT_REGION --filters "Name=tag:Name,Values=load-generator" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].{ID:InstanceId}" --output text)
 
 EC2_DNS_NAME=$(aws ec2 describe-instances --region us-east-2 --instance-id $EC2_ID | jq -r ".Reservations[0].Instances[0].PublicDnsName")
 
@@ -80,7 +80,7 @@ aws configure
 Update your kubeconfig file with your EKS Cluster reference
 
 ```
-aws eks update-kubeconfig --name kong310-eks132 --region us-east-2
+aws eks update-kubeconfig --name kong310-eks132 --region $AWS_DEFAULT_REGION
 ```
 
 ### decK
