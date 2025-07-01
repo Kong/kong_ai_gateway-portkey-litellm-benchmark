@@ -23,7 +23,7 @@ services:
             provider: openai
             name: gpt-4
             options:
-              upstream_url: "<WIREMOCK_NLB_DNS_NAME>:9021/chat"
+              upstream_url: "http://<WIREMOCK_NLB_DNS_NAME>:9021/chat"
           route_type: "llm/v1/chat"
 
 
