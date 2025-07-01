@@ -7,7 +7,6 @@ If necessary, set your default AWS region. This variable will be used in several
 export AWS_DEFAULT_REGION=<your region>
 ```
 
-
 ## EKS Cluster Creation and Tools Node
 
 Initially, the EKS Cluster has a single Node where we are going to install the tools and controller necessary for the benchmark including
@@ -82,7 +81,7 @@ curl -O https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-cont
 
 ```
 aws iam create-policy \
-    --policy-name AWSLoadBalancerControllerIAMPolicy \
+    --policy-name AIGBenchmarkLoadBalancerPolicy \
     --policy-document file://iam_policy.json
 ```
 
@@ -97,8 +96,8 @@ eksctl create podidentityassociation \
     --region $AWS_DEFAULT_REGION \
     --namespace kube-system \
     --service-account-name aws-load-balancer-controller \
-    --role-name AWSLoadBalancerControllerIAMRole-kong310-eks132 \
-    --permission-policy-arns arn:aws:iam::<YOUR_AWS_ACCOUNT_ID>:policy/AWSLoadBalancerControllerIAMPolicy
+    --role-name AIGBenchmarkLoadBalancerControllerIAMRole-kong310-eks132 \
+    --permission-policy-arns arn:aws:iam::<YOUR_AWS_ACCOUNT_ID>:policy/AIGBenchmarkLoadBalancerPolicy
 ```
 
 ```
@@ -138,6 +137,7 @@ EOF
 ```
 
 ## kubectl
+
 In order to perform kubectl operations, you will need to set your config to the newly created cluster. You may want to backup your existing configs first.
 
 ```
@@ -161,7 +161,6 @@ helm install prometheus -n prometheus prometheus-community/kube-prometheus-stack
 --set grafana.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-scheme"="internet-facing" \
 --set grafana.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-nlb-target-type"="ip"
 ```
-
 
 ```
 GRAFANA_LB=$(kubectl get service prometheus-grafana -n prometheus -o json | jq -r '.status.loadBalancer.ingress[].hostname')

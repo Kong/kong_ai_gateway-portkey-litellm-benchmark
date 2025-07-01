@@ -38,6 +38,7 @@ aws ec2 run-instances \
 Use the same AWS Key pair you've created previously
 
 ```
+
 EC2_ID=$(aws ec2 describe-instances --region $AWS_DEFAULT_REGION --filters "Name=tag:Name,Values=load-generator" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].{ID:InstanceId}" --output text)
 
 EC2_DNS_NAME=$(aws ec2 describe-instances --region $AWS_DEFAULT_REGION --instance-id $EC2_ID | jq -r ".Reservations[0].Instances[0].PublicDnsName")
