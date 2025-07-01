@@ -45,18 +45,22 @@ Create a Namespace and a Secret
 ```
 kubectl create namespace kong
 
-kubectl create secret generic konnect-pat -n kong --from-literal=token='<YOUR_PAT>'
+kubectl create secret generic konnect-pat -n kong --from-literal=token="${PAT}"
 
 kubectl label secret konnect-pat -n kong "konghq.com/credential=konnect"
 ```
 
+If you run the following command you should see you PAT:
+```
+kubectl get secret konnect-pat -n kong -o jsonpath='{.data.*}' | base64 -d
+```
 
 ### Kong Konnect Control Plane
 
 The Control Plane installation uses the following [cp.yaml](../kgo/cp.yaml) file.
 
 ```
-kubectl apply -f ./cp_yaml
+kubectl apply -f ./cp.yaml
 ```
 
 
@@ -65,7 +69,7 @@ kubectl apply -f ./cp_yaml
 The Data Plane uses the [dp.yaml](../kgo/dp.yaml) file. Note the deployment also spings up 3 replicas for the Data Plane:
 
 ```
-kubectl apply -f ./dp_yaml
+kubectl apply -f ./dp.yaml
 ```
 
 #### Check DP's logs

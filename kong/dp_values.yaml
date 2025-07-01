@@ -41,10 +41,8 @@ env:
   nginx_worker_processes: "4"
   upstream_keepalive_max_requests: "100000"
   nginx_http_keepalive_requests: "100000"
-  nginx_http_client_body_buffer_size: 5m
   proxy_access_log: "off"
   dns_stale_ttl: "3600"
-  log_level: notice
 
 replicaCount: 3
   

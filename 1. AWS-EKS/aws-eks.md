@@ -28,7 +28,7 @@ chmod 400 aig-benchmark.pem
 ```
 
 Create the EKS cluster. Ensure you use the ssh key you created above, or replace it with your own ssh key. This ssh key will be needed in later steps.
- 
+
 ```
 eksctl create cluster -f - <<EOF
 apiVersion: eksctl.io/v1alpha5
@@ -137,7 +137,8 @@ EOF
 ```
 
 ## kubectl
-In order to perform `kubectl` operations, you will need to set your config to the newly created cluster. You may want to backup your existing configs first.
+
+In order to perform kubectl operations, you will need to set your config to the newly created cluster. You may want to backup your existing configs first.
 
 ```
 aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name kong310-eks132

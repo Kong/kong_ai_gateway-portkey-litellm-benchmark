@@ -11,6 +11,7 @@ kubectl create namespace portkey
 
 ```
 kubectl apply -f portkey_deployment.yaml
+kubectl apply -f portkey_service.yaml
 ```
 
 

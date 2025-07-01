@@ -2,21 +2,32 @@
 
 ## EC2 Instance
 
-K6 will run on same VPC created by the EKS Cluster on a specific EC2 instance.
+K6 will be installed on an EC2 running Ubuntu 24.04. The EC2 will run on same VPC created by the EKS Cluster.
 
-Two main settings here are:
+Get the AMI ID first. Canonical has a well known owner id as ``099720109477``. The query gets the ID of the most recent AMI available.
+```
+AMI_ID=$(aws ec2 describe-images \
+  --region $AWS_DEFAULT_REGION \
+  --owners 099720109477 \
+  --query "Images | sort_by(@, &CreationDate) | [-1].{ID:ImageId}" \
+  --filters "Name=description,Values='Canonical, Ubuntu, 24.04, amd64*'" \
+  --output text)
+```
+
+Now, create the EC2 instance. Two main settings here are:
+
 * ``security-group-ids``: it should be the security id set with ``all-traffic - SSH``.
 * ``subnet-id``: it is a public subnet where EKS node were created.
 
 ```
 aws ec2 run-instances \
-  --region us-west-2 \
-  --image-id ami-05f991c49d264708f \
+  --region $AWS_DEFAULT_REGION \
+  --image-id $AMI_ID \
   --count 1 \
   --instance-type c6i.4xlarge \
   --key-name aig-benchmark \
-  --security-group-ids sg-04e9638a180a9feb6 \
-  --subnet-id subnet-0873e2fd2df4c8a4e \
+  --security-group-ids <YOUR_SECURITY_GROUP_ID> \
+  --subnet-id <YOUR_SUBNET_ID> \
   --associate-public-ip-address \
   --tag-specification 'ResourceType=instance,Tags=[{Key="Name",Value="load-generator"}]' \
   --block-device-mapping '[{"DeviceName":"/dev/xvda","Ebs":{"VolumeSize": 500}}]'
@@ -27,9 +38,10 @@ aws ec2 run-instances \
 Use the same AWS Key pair you've created previously
 
 ```
-EC2_ID=$(aws ec2 describe-instances --region us-west-2 --filters "Name=tag:Name,Values=load-generator" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].{ID:InstanceId}" --output text)
 
-EC2_DNS_NAME=$(aws ec2 describe-instances --region us-west-2 --instance-id $EC2_ID | jq -r ".Reservations[0].Instances[0].PublicDnsName")
+EC2_ID=$(aws ec2 describe-instances --region $AWS_DEFAULT_REGION --filters "Name=tag:Name,Values=load-generator" "Name=instance-state-name,Values=running" --query "Reservations[0].Instances[0].{ID:InstanceId}" --output text)
+
+EC2_DNS_NAME=$(aws ec2 describe-instances --region $AWS_DEFAULT_REGION --instance-id $EC2_ID | jq -r ".Reservations[0].Instances[0].PublicDnsName")
 
 ssh -i "aig-benchmark.pem" ubuntu@$EC2_DNS_NAME
 ```
@@ -38,7 +50,9 @@ ssh -i "aig-benchmark.pem" ubuntu@$EC2_DNS_NAME
 ## Install utilities
 ```
 sudo su
+```
 
+```
 apt-get update
 ```
 
@@ -69,9 +83,20 @@ aws configure
 Update your kubeconfig file with your EKS Cluster reference
 
 ```
-aws eks update-kubeconfig --name kong310-eks132 --region us-east-2
+export AWS_DEFAULT_REGION=<your region>
+
+aws eks update-kubeconfig --name kong310-eks132 --region $AWS_DEFAULT_REGION
 ```
 
+
+### Helm
+
+```
+wget https://get.helm.sh/helm-v3.18.3-linux-amd64.tar.gz
+
+tar -zxvf helm-v3.18.3-linux-amd64.tar.gz
+mv linux-amd64/helm /usr/local/bin/helm
+```
 ### decK
 
 Install [decK](https://docs.konghq.com/deck/) (declaration for Kong)
@@ -79,7 +104,7 @@ Install [decK](https://docs.konghq.com/deck/) (declaration for Kong)
 ```
 wget https://github.com/Kong/deck/releases/download/v1.47.1/deck_1.47.1_linux_amd64.tar.gz
 
-tar xvf deck_1.47.1_linux_amd64.tar.gz
+tar -zxvf deck_1.47.1_linux_amd64.tar.gz
 mv ./deck /usr/local/bin
 ```
 

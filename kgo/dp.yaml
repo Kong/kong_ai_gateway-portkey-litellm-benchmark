@@ -39,12 +39,18 @@ spec:
              cpu: 4
              memory: "3Gi"
          env:
-           - name: KONG_LOG_LEVEL
-             value: notice
            - name: KONG_PROXY_ACCESS_LOG
              value: "off"
            - name: KONG_NGINX_WORKER_PROCESSES
              value: "4"
+           - name: KONG_PROXY_ACCESS_LOG
+             value: "off"
+           - name: KONG_UPSTREAM_KEEPALIVE_MAX_REQUESTS
+             value: "100000"
+           - name: KONG_NGINX_HTTP_KEEPALIVE_MAX_REQUESTS
+             value: "100000"
+           - name: KONG_DNS_STALE_TTL
+             value: "3600"
        nodeSelector:
          "alpha.eksctl.io/nodegroup-name": "node-ai-gateway"
  network:

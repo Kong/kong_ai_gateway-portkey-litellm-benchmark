@@ -50,9 +50,13 @@ You can check WireMock's logs with:
 kubectl logs -f $(kubectl get pod -n wiremock-lb -o json | jq -r '.items[].metadata | select(.name | startswith("wiremock-"))' | jq -r '.name') -n wiremock
 ```
 
-
 ```
 export WIREMOCK_LB=$(kubectl get service -n wiremock wiremock-lb --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+```
+
+Create an Internal NLB for WireMock
+```
+kubectl apply -f wiremock-service.yaml
 ```
 
 ## Test WireMock
@@ -66,8 +70,8 @@ kubectl port-forward service/wiremock -n wiremock 9021
 
 In another terminal run
 ```
-http 127.0.0.1:9021
-http 127.0.0.1:9021/__admin/mappings
+http :9021
+http :9021/__admin/mappings
 ```
 
 ### K6's EC2
