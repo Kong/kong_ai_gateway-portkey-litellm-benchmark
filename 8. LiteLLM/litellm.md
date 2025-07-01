@@ -14,7 +14,7 @@ To install it, we are going to use the [Helm Charts](https://docs.litellm.ai/doc
 
 ```
 helm pull oci://ghcr.io/berriai/litellm-helm
-tar -zxvf litellm-helm-0.1.636.tgz
+tar -zxvf litellm-helm-*
 ```
 
 For the install use the following [values.yaml](../litellm/values.yaml) declaration. Its main settings are:

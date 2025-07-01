@@ -46,29 +46,8 @@ kubectl logs -f $(kubectl get pod -n wiremock -o json | jq -r '.items[].metadata
 ```
 
 Create an Internal NLB for WireMock
-
 ```
-cat <<EOF > wiremock-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: wiremock-lb
-  namespace: wiremock
-  annotations:
-    "service.beta.kubernetes.io/aws-load-balancer-type": "nlb"
-    "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type": "ip"
-    service.beta.kubernetes.io/aws-load-balancer-target-group-attributes: proxy_protocol_v2.enabled=true
-
-spec:
-  type: LoadBalancer
-  selector:
-    app.kubernetes.io/name: wiremock
-  ports:
-    - protocol: TCP
-      port: 9021
-      targetPort: 9021
-      name: wiremock
-EOF
+kubectl apply -f wiremock-service.yaml
 ```
 
 ## Test WireMock
@@ -82,6 +61,8 @@ kubectl port-forward service/wiremock -n wiremock 9021
 
 In another terminal run
 ```
+export WIREMOCK_LB=$(kubectl get service wiremock-lb -n wiremock --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
 http $WIREMOCK_LB:9021
 http $WIREMOCK_LB:9021/__admin/mappings
 ```

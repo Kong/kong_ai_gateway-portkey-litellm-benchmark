@@ -25,6 +25,9 @@ kubectl create secret generic kong-enterprise-license -n kong-cp --from-file=./l
 The Control Plane installation uses the following [cp_values.yaml](../kong/cp_values.yaml) file.
 
 ```
+helm repo add kong https://charts.konghq.com
+helm repo update
+
 helm install kong-cp kong/kong -n kong-cp --values ./cp_values.yaml
 ```
 
@@ -37,7 +40,9 @@ kubectl logs -f $(kubectl get pod -n kong-cp -o json | jq -r '.items[].metadata 
 ### Consume the CP
 ```
 export CONTROLPLANE_LB=$(kubectl get svc -n kong-cp kong-cp-kong-admin --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+```
 
+```
 http $CONTROLPLANE_LB:8001 | jq -r '.version'
 ```
 

@@ -49,12 +49,14 @@ ssh -i "acquaviva-us-east-2.pem" ubuntu@$EC2_DNS_NAME
 ## Install utilities
 ```
 sudo su
+```
 
+```
 apt-get update
 ```
 
 ```
-apt-get -y install httpie jq
+apt-get -y install httpie jq unzip
 ```
 
 ### kubectl
@@ -80,9 +82,20 @@ aws configure
 Update your kubeconfig file with your EKS Cluster reference
 
 ```
+export AWS_DEFAULT_REGION=<your region>
+
 aws eks update-kubeconfig --name kong310-eks132 --region $AWS_DEFAULT_REGION
 ```
 
+
+### Helm
+
+```
+wget https://get.helm.sh/helm-v3.18.3-linux-amd64.tar.gz
+
+tar -zxvf helm-v3.18.3-linux-amd64.tar.gz
+mv linux-amd64/helm /usr/local/bin/helm
+```
 ### decK
 
 Install [decK](https://docs.konghq.com/deck/) (declaration for Kong)
@@ -90,7 +103,7 @@ Install [decK](https://docs.konghq.com/deck/) (declaration for Kong)
 ```
 wget https://github.com/Kong/deck/releases/download/v1.47.1/deck_1.47.1_linux_amd64.tar.gz
 
-tar xvf deck_1.47.1_linux_amd64.tar.gz
+tar -zxvf deck_1.47.1_linux_amd64.tar.gz
 mv ./deck /usr/local/bin
 ```
 
