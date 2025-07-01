@@ -61,10 +61,8 @@ kubectl port-forward service/wiremock -n wiremock 9021
 
 In another terminal run
 ```
-export WIREMOCK_LB=$(kubectl get service wiremock-lb -n wiremock --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-
-http $WIREMOCK_LB:9021
-http $WIREMOCK_LB:9021/__admin/mappings
+http :9021
+http :9021/__admin/mappings
 ```
 
 ### K6's EC2
