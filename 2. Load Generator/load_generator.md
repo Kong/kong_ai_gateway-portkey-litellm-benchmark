@@ -14,7 +14,7 @@ AMI_ID=$(aws ec2 describe-images \
   --output text)
 ```
 
-Now, create the EC2 instance. Two main settings here are:d
+Now, create the EC2 instance. Two main settings here are:
 
 * ``security-group-ids``: it should be the security id set with ``all-traffic - SSH``.
 * ``subnet-id``: it is a public subnet where EKS node were created.
