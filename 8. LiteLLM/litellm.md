@@ -84,7 +84,7 @@ curl -sX POST \
 Inside the K6's EC2 use the [LiteLLM's K6 script](../k6/litellm.js) to run the performance test. Make sure you have the ``LITELLM_LB`` and the ``PROMPT`` environment variables set.
 
 ```
-k6 run kong.js
+k6 run litellm.js
 ```
 
 
