@@ -54,10 +54,6 @@ kubectl logs -f $(kubectl get pod -n wiremock-lb -o json | jq -r '.items[].metad
 export WIREMOCK_LB=$(kubectl get service -n wiremock wiremock-lb --output=jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 ```
 
-Create an Internal NLB for WireMock
-```
-kubectl apply -f wiremock-service.yaml
-```
 
 ## Test WireMock
 
