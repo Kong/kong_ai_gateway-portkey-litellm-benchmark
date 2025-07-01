@@ -3,7 +3,7 @@ kind: StorageClass
 metadata:
   name: litellm-sc
 provisioner: ebs.csi.aws.com
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
 parameters:
   fsType: ext4
   type: gp3
