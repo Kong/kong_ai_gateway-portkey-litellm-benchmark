@@ -8,8 +8,11 @@ K6 played the load generator role, running on an EC2 instance deployed in the sa
 
 Lastly, another EKS Node was used to deploy tools and admin components like Prometheus/Grafana, the AWS Load Balancer Controller and Kong Gateway Enterprise Control Plane.
 
+### Benchmark Architecture
 
-## AI Gateways consumption and policies
+<img src="/static/images/architecture.png" width="757" height="477"/>
+
+### AI Gateways consumption and policies
 
 The main goal was to compare the AI Gateways in similar scenarios and consuming the same resources, so all deployments had the resource configuration with an upper limit of 12 CPUs. From the performance perspective, they were deployed with the default configuration meaning they were not tuned to get better results.
 
@@ -17,13 +20,7 @@ For the comparison tests all Gateways were configured to play the proxy role onl
 
 For all benchmark tests, K6 ran for 3 minutes always injecting the same throughput to all AI Gateway with 400 VUs (each VU representing a consumer) sending requests with 1000 prompt tokens.
 
-
-
-
-
-
-<img src="/static/images/architecture.png" width="757" height="477"/>
-
+### Implementation
 
 To have your own deployment and run the same tests read the instructs described in the following order:
 
