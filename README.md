@@ -9,7 +9,7 @@ K6 played the load generator role, running on an EC2 instance deployed in the sa
 Lastly, another EKS Node was used to deploy tools and admin components like Prometheus/Grafana, the AWS Load Balancer Controller and Kong Gateway Enterprise Control Plane.
 
 
-* AI Gateways consumption and policies
+## AI Gateways consumption and policies
 
 The main goal was to compare the AI Gateways in similar scenarios and consuming the same resources, so all deployments had the resource configuration with an upper limit of 12 CPUs. From the performance perspective, they were deployed with the default configuration meaning they were not tuned to get better results.
 
