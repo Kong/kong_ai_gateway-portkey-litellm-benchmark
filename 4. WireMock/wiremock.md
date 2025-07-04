@@ -94,7 +94,7 @@ http http://127.0.0.1:9021/__admin/mappings | jq '.mappings[].request'
 
 ## Send requests to WireMock
 
-We have [4 prompts](./prompts.md) available. For these benchmarks test use [Prompt #3](./prompts.md#prompt-3-used-for-the-tests).
+We have [4 prompts](../wiremock/prompts.md) available. For these benchmarks test use [Prompt #3](../wiremock/prompts.md#prompt-3-used-for-the-tests).
 
 Inside K6's EC2 run:
 ```
