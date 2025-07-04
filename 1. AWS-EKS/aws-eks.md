@@ -63,7 +63,7 @@ eksctl create addon --cluster kong310-eks132 \
 
 ## Check the Add-Ons
 
-Before installing any Add-On make sure they are ``ACTIVE``:
+Before using any Add-On make sure they are ``ACTIVE``:
 
 ```
 eksctl get addons --cluster kong310-eks132 --region $AWS_DEFAULT_REGION
