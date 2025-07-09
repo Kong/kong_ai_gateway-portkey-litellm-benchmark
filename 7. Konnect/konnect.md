@@ -2,7 +2,7 @@
 
 ## Kong Gateway Operator (KGO), Konnect Control Plane creation and Data Plane deployment
 
-We are going to use [Kong Gateway Operator (KGO)](https://docs.konghq.com/gateway-operator) to create the Konnect Control Plane and Data Plane. First, install the KGO Operator:
+We are going to use [Kong Gateway Operator (KGO)](https://docs.konghq.com/gateway-operator) to create the Konnect Control Plane and Data Plane. First, install KGO:
 
 ```
 helm repo add kong https://charts.konghq.com
