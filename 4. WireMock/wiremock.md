@@ -59,7 +59,7 @@ export WIREMOCK_LB=$(kubectl get service -n wiremock wiremock-lb --output=jsonpa
 
 You can test WireMock installation port-forwarding its port or hitting it directly from the K6's EC2.
 
-### Port-Forwardcurl
+### Port-Forward
 ```
 kubectl port-forward service/wiremock -n wiremock 9021
 ```
