@@ -50,7 +50,7 @@ kubectl create secret generic konnect-pat -n kong --from-literal=token="${PAT}"
 kubectl label secret konnect-pat -n kong "konghq.com/credential=konnect"
 ```
 
-If you run the following command you should see you PAT:
+If you run the following command you should see your PAT:
 ```
 kubectl get secret konnect-pat -n kong -o jsonpath='{.data.*}' | base64 -d
 ```
